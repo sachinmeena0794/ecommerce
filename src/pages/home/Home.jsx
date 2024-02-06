@@ -7,12 +7,14 @@ import ProductCard from '../../components/productCard/ProductCard'
 import Track from '../../components/track/Track'
 import Testimonial from '../../components/testimonial/Testimonial'
 import { Link } from 'react-router-dom'
+import About from '../../components/about/About'
 
 
 function Home() {
   return (
     <Layout>
       <HeroSection />
+      {/* <About/> */}
       {/* <Filter /> */}
       <ProductCard />
       <div className="flex justify-center -mt-10 mb-4">

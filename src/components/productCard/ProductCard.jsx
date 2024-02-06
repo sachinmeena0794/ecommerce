@@ -44,7 +44,7 @@ function ProductCard() {
                           <img className="rounded-2xl w-full h-80 p-2 hover:scale-110 transition-scale-110 duration-300 ease-in-out" src={imageUrl} alt="blog" />
                         </div>
                         <div className="flex-grow p-5 border-t-2 flex flex-col">
-                          <h2 className="tracking-widest text-xs title-font font-medium text-gray-400 mb-1" style={{ color: mode === 'dark' ? 'white' : '' }}>E-Bharat</h2>
+                          <h2 className="tracking-widest text-xs title-font font-medium text-gray-400 mb-1" style={{ color: mode === 'dark' ? 'white' : '' }}>HEKAWY</h2>
                           <h1 className="title-font text-lg font-medium text-gray-900 mb-3" style={{ color: mode === 'dark' ? 'white' : '' }}>{title}</h1>
                           <p className="leading-relaxed mb-3 mt-auto" style={{ color: mode === 'dark' ? 'white' : '' }}>₹{price}</p>
                           <div>
