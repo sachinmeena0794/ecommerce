@@ -16,9 +16,9 @@ function Login() {
     const navigate = useNavigate();
 
     const login = async () => {
-        setLoading(true)
+        setLoading(true);
         try {
-            const result = await signInWithEmailAndPassword(auth,email,password);
+            const result = await signInWithEmailAndPassword(auth, email, password);
             toast.success("Login successful", {
                 position: "top-right",
                 autoClose: 2000,
@@ -28,17 +28,25 @@ function Login() {
                 draggable: true,
                 progress: undefined,
                 theme: "colored",
-              })
-            localStorage.setItem('user', JSON.stringify(result))
-            navigate('/')
-            setLoading(false)
-            
+            });
+            localStorage.setItem('user', JSON.stringify(result));
+            navigate('/');
         } catch (error) {
-            console.log(error)
-            setLoading(loading)
+            console.log(error);
+            setLoading(false);
+            toast.error("Login failed. Please check your email and password.", {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+            });
         }
-
     }
+    
    
     return (
         <div className=' flex justify-center items-center h-screen'>

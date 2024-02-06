@@ -2,7 +2,7 @@ import React from 'react';
 
 function HeroSection() {
   return (
-    <div style={{ position: 'relative', width: '100%', height: '600px' }}>
+    <div style={{ position: 'relative', width: '100%', height: '800px' }}>
       <video
         style={{ width: '100%', height: '100%', objectFit: 'cover' }}
         autoPlay

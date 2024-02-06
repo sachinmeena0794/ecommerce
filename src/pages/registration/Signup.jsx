@@ -1,5 +1,5 @@
 import { useContext, useState } from 'react';
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'; // Import useNavigate
 import myContext from '../../context/data/myContext';
 import { toast } from 'react-toastify';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
@@ -11,6 +11,7 @@ function Signup() {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const navigate = useNavigate(); // Initialize useNavigate
 
     const context = useContext(myContext);
     const { loading, setLoading } = context;
@@ -39,6 +40,7 @@ function Signup() {
             setEmail("");
             setPassword("");
             setLoading(false)
+            navigate('/'); // Navigate to the home page on successful signup
             
         } catch (error) {
             console.log(error)
@@ -96,4 +98,4 @@ function Signup() {
     )
 }
 
-export default Signup
+export default Signup;

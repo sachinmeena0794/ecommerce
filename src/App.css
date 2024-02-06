@@ -1,6 +1,60 @@
+body{
+    background: #DDD5C9;
+}
+
 .section-description {
     font-size: 1.2rem; /* Adjust the font size as needed */
     line-height: 1.6; /* Adjust the line height for readability */
     color: #333; /* Choose a suitable color for the text */
     margin-top: 20px; /* Add some spacing from the section title */
   }
+
+  /* Define hover effect for links */
+
+  
+  /* Define hover effect for menu items */
+ 
+  /* Global styles */
+
+.side-menu {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 280px;
+  height: 100%;
+  background-color: #333; /* Adjust background color as needed */
+  transform: translateX(-280px);
+  transition: transform 0.3s ease;
+}
+
+.side-menu.open {
+  transform: translateX(0);
+}
+
+.close-button {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  color: white;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 24px;
+}
+
+.menu-items {
+  margin-top: 60px; /* Adjust top margin as needed */
+  padding: 20px;
+}
+
+.menu-item {
+  display: block;
+  color: white;
+  text-decoration: none;
+  font-size: 18px;
+  margin-bottom: 20px; /* Adjust bottom margin between menu items */
+}
+
+.menu-item:hover {
+  color: lightgray; /* Adjust hover color as needed */
+}
