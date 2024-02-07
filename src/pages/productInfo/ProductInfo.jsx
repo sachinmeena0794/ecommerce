@@ -57,10 +57,10 @@ function ProductInfo() {
                     ) : (
                         product && 
                         <div className="lg:w-4/5 mx-auto flex flex-wrap items-center">
-                            <div className="lg:w-1/2 w-full relative" onClick={() => setShowModal(true)}>
+                            <div className="lg:w-1/2 w-full relative cursor-pointer" onClick={() => setShowModal(true)}>
                                 <img
                                     alt="ecommerce"
-                                    className="w-full h-auto object-cover object-center rounded-lg shadow-xl cursor-pointer"
+                                    className="w-full h-auto object-cover object-center rounded-lg shadow-xl"
                                     src={product.imageUrl}
                                 />
                             </div>
@@ -89,7 +89,7 @@ function ProductInfo() {
                     {showModal && (
                         <div className="fixed top-0 left-0 z-50 w-full h-full flex items-center justify-center bg-black bg-opacity-75">
                             <div className="relative">
-                                <button className="absolute top-4 right-4 text-black text-lg" onClick={() => setShowModal(false)}>Close</button>
+                                <button className="absolute top-4 right-4 text-black text-lg transition duration-300 hover:text-gray-400 transform hover:scale-110" onClick={() => setShowModal(false)}>Close</button>
                                 <img
                                     src={product.imageUrl}
                                     alt="Product"
