@@ -126,7 +126,6 @@ function myState(props) {
         setLoading(true)
         try {
             await deleteDoc(doc(fireDB, 'products', item.id))
-            toast.success('Product Deleted successfully')
             getProductData();
             setLoading(false)
         } catch (error) {
