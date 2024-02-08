@@ -72,3 +72,6 @@ body{
 .animate-fade-in {
   animation: fade-in 1s ease-in-out, change-color 3s infinite alternate; /* Combine both animations */
 }
+body{
+  font-family: "Didot Bold";
+}

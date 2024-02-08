@@ -99,6 +99,7 @@ function Cart() {
         const orderInfo = {
           cartItems,
           addressInfo,
+          grandTotal,
           date: new Date().toLocaleString(
             'en-US',
             {

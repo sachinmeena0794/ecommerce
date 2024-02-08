@@ -38,7 +38,7 @@ function ProductCard() {
                 <div key={index} className="p-4 drop-shadow-lg" style={{ marginBottom: '20px' }}> {/* Added marginBottom */}
                   <div className="flex flex-col h-full">
                     <div onClick={() => navigate(`/productinfo/${id}`)} className="flex justify-center cursor-pointer h-96"> {/* Increased height for each product container */}
-                      <img className="object-cover w-full h-full hover:scale-110 transition-scale-110 duration-300 ease-in-out" src={imageUrl} alt="product" /> {/* Adjusted size of the image */}
+                      <img className="object-cover w-full h-full hover:scale-110 transition-scale-180 duration-300 ease-in-out" src={imageUrl} alt="product" /> {/* Adjusted size of the image */}
                     </div>
                   </div>
                 </div>

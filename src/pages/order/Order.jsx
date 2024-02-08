@@ -33,8 +33,8 @@ function Order() {
                       <div className="sm:ml-4 sm:flex sm:w-full sm:justify-between">
                         <div className="mt-5 sm:mt-0">
                           <h2 className="text-lg font-bold text-gray-900" style={{ color: mode === 'dark' ? 'white' : '' }}>{item.title}</h2>
-                          <p className="mt-1 text-xs text-gray-700" style={{ color: mode === 'dark' ? 'white' : '' }}>{item.description}</p>
-                          <p className="mt-1 text-xs text-gray-700" style={{ color: mode === 'dark' ? 'white' : '' }}>{item.price}</p>
+                          <p className="mt-1 text-xs text-gray-700" >{item.description}</p>
+                          <p className="mt-1 text-xs text-gray-700" >{item.price}</p>
                         </div>
                       </div>
                     </div>

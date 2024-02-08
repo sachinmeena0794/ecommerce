@@ -22,7 +22,7 @@ function HeroSection() {
           color: 'white', // Set text color
         }}
       >
-        <h1 style={{ fontSize: '3rem',fontWeight:"600" }}>FOR YOU TO TOUCH & FEEL GOOD</h1>
+        <h1 style={{ fontSize: '3rem',fontWeight:"600" ,fontFamily:"Didot Bold" }}>FOR YOU TO TOUCH & FEEL GOOD</h1>
       </div>
     </div>
   );
