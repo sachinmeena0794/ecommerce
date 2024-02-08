@@ -1,15 +1,11 @@
 import React, { Fragment, useContext, useState } from 'react';
-import { FiSun, FiMenu, FiShoppingCart } from 'react-icons/fi';
-import myContext from '../../context/data/myContext';
+import { FiMenu, FiShoppingCart } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
-import { Dialog, Transition } from '@headlessui/react';
-import { RxCross2 } from 'react-icons/rx';
 import { useSelector } from 'react-redux';
 import SideMenu from './SideMenu';
 
 function Navbar() {
-  const context = useContext(myContext);
-  const { mode, toggleMode } = context;
+
 
   const [isMenuOpen, setIsMenuOpen] = useState(false); // State to track if the menu is open
 

@@ -48,52 +48,31 @@ function Dashboard() {
 
   return (
     <Layout>
-      <section className={`text-gray-600 body-font mt-10 mb-10 ${mode === 'dark' ? 'dark-mode' : ''}`}>
-        <div className="container px-5 mx-auto mb-10">
-          <div className="flex flex-wrap -m-4 text-center">
-            {/* Card for Total Products */}
-            <DashboardCard
-              icon={<FaUserTie size={50} />}
-              count={totalProducts}
-              label="Total Products"
-              mode={mode}
-            />
+      <section className="text-gray-600 body-font h-screen flex flex-col justify-center items-center">
+  <div className="container mx-auto px-4 mb-10">
+    <div className="flex flex-wrap -m-4 text-center">
+      <DashboardCard icon={<FaUserTie size={50} />} count={totalProducts} label="Total Products" />
+      <DashboardCard icon={<FaUserTie size={50} />} count={totalOrders} label="Total Orders" />
+      <DashboardCard icon={<FaUserTie size={50} />} count={totalUsers} label="Total Users" />
+      {/* Add more cards as needed */}
+    </div>
+  </div>
+  <DashboardTab />
+</section>
 
-            {/* Card for Total Orders */}
-            <DashboardCard
-              icon={<FaUserTie size={50} />}
-              count={totalOrders}
-              label="Total Orders"
-              mode={mode}
-            />
-
-            {/* Card for Total Users */}
-            <DashboardCard
-              icon={<FaUserTie size={50} />}
-              count={totalUsers}
-              label="Total Users"
-              mode={mode}
-            />
-
-            {/* Add more cards as needed */}
-
-          </div>
-        </div>
-        <DashboardTab />
-      </section>
     </Layout>
   );
 }
 
 // Component for individual dashboard cards
-const DashboardCard = ({ icon, count, label, mode }) => (
-  <div className="p-4 md:w-1/4 sm:w-1/2 w-full">
-    <div className={`border-2 hover:shadow-purple-600 shadow-[inset_0_0_10px_rgba(0,0,0,0.6)] bg-gray-100 border-gray-300 px-4 py-3 rounded-xl ${mode === 'dark' ? 'dark-mode-card' : ''}`}>
+const DashboardCard = ({ icon, count, label }) => (
+  <div className="p-4 md:w-1/3 sm:w-1/2 w-full">
+    <div className="border-2 hover:shadow-purple-600 shadow-[inset_0_0_10px_rgba(0,0,0,0.6)] bg-gray-100 border-gray-300 px-4 py-3 rounded-xl">
       <div className="text-purple-500 w-12 h-12 mb-3 inline-block" viewBox="0 0 24 24">
         {icon}
       </div>
-      <h2 className="title-font font-medium text-3xl text-black fonts1" style={{ color: mode === 'dark' ? 'white' : '' }}>{count}</h2>
-      <p className=" text-purple-500 font-bold" style={{ color: mode === 'dark' ? 'white' : '' }}>{label}</p>
+      <h2 className="title-font font-medium text-3xl text-black">{count}</h2>
+      <p className=" text-purple-500 font-bold">{label}</p>
     </div>
   </div>
 );
