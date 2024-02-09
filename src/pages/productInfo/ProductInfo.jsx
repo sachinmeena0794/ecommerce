@@ -39,10 +39,20 @@ function ProductInfo() {
     const dispatch = useDispatch();
     const cartItems = useSelector((state) => state.cart);
 
-    const handleAddToCart = () => {
-        dispatch(addToCart(product));
-        toast.success('Added to cart');
-    };
+    const handleAddToCart  = (item) => {
+        const existingItemIndex = cartItems.findIndex((cartItem) => cartItem.id === item.id);
+        if (existingItemIndex !== -1) {
+          // Item already exists in cart, update quantity
+          const updatedCartItems = [...cartItems];
+          updatedCartItems[existingItemIndex].quantity += 1; // Increase quantity
+          dispatch(updateCartItemQuantity(updatedCartItems[existingItemIndex]));
+          toast.success('Item quantity updated');
+        } else {
+          // Item does not exist in cart, add new item
+          dispatch(addToCart(item));
+          toast.success('Item added to cart');
+        }
+      };
 
     useEffect(() => {
         localStorage.setItem('cart', JSON.stringify(cartItems));
