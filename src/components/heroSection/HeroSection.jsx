@@ -8,6 +8,7 @@ function HeroSection() {
         autoPlay
         loop
         muted
+        playsInline
       >
         <source src='src/assets/production_id_3917742 (2160p).mp4' type="video/mp4" />
         Your browser does not support the video tag.

@@ -31,10 +31,10 @@ function ProductCard({ products, showDetails }) { // Receive 'products' and 'sho
   return (
     <section className="text-gray-600 body-font">
       <div className="container px-5 py-8 md:py-16 mx-auto">
-       { !showDetails && <h1 className={`text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-4 animate-fade-in ${productsLoaded ? 'opacity-100' : 'opacity-0'}`}>
+       { !showDetails && <h1 className={`text-3xl md:text-4xl lg:text-5xl font-bold }`}>
           Our Latest Collection
         </h1>}
-        <hr className="border-t-3 border-gray-500 mx-auto mb-8 w-48" /> {/* Horizontal rule with increased border color */}
+        <hr className="border-t-3 border-gray-500  mb-8 w-80" /> {/* Horizontal rule with increased border color */}
         {/* Rest of the component */}
         {/* Conditionally render the loader if the products are not yet loaded */}
         {!productsLoaded ? (
