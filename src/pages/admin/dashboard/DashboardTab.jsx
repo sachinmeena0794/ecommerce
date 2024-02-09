@@ -36,14 +36,14 @@ function OrderDetails({ order }) {
 
         return paginatedData.map((allorder, index) => (
             <tr key={index} className="bg-gray-50 border-b dark:border-gray-700" >
-                <td className="px-6 py-4 text-black">{allorder?allorder.paymentId :""}</td>
-                <td className="px-6 py-4 text-black">₹{allorder?allorder.grandTotal:""}</td>
-                <td className="px-6 py-4 text-black">{allorder.addressInfo? allorder.addressInfo.name:""}</td>
-                <td className="px-6 py-4 text-black">{allorder.addressInfo?allorder.addressInfo.address:""}</td>
-                <td className="px-6 py-4 text-black">{allorder.addressInfo?allorder.addressInfo.pincode:""}</td>
-                <td className="px-6 py-4 text-black">{allorder.addressInfo?allorder.addressInfo.phoneNumber:""}</td>
-                <td className="px-6 py-4 text-black">{allorder?allorder.email:""}</td>
-                <td className="px-6 py-4 text-black">{allorder?allorder.date:""}</td>
+                <td className="px-6 py-4 text-black">{allorder.paymentId}</td>
+                <td className="px-6 py-4 text-black">₹{allorder.grandTotal}</td>
+                <td className="px-6 py-4 text-black">{allorder.addressInfo.name}</td>
+                <td className="px-6 py-4 text-black">{allorder.addressInfo.address}</td>
+                <td className="px-6 py-4 text-black">{allorder.addressInfo.pincode}</td>
+                <td className="px-6 py-4 text-black">{allorder.addressInfo.phoneNumber}</td>
+                <td className="px-6 py-4 text-black">{allorder.email}</td>
+                <td className="px-6 py-4 text-black">{allorder.date}</td>
             </tr>
         ));
     };
@@ -215,7 +215,7 @@ function DashboardTab() {
                                                             {title}
                                                         </td>
                                                         <td className="px-6 py-4 text-black " >
-                                                            {price}
+                                                            ₹{price}
                                                         </td>
                                                         <td className="px-6 py-4 text-black " >
                                                             {category}
