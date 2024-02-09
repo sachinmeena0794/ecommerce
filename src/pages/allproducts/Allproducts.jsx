@@ -31,7 +31,7 @@ function Allproducts() {
   return (
     <Layout>
       <Filter/>
-      <ProductCard/>
+      <ProductCard products={product}  showDetails={true}/>
     </Layout>
   )
 }

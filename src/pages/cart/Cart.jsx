@@ -20,9 +20,14 @@ function Cart() {
   console.log(cartItems)
 
   const deleteCart = (item) => {
-    dispatch(deleteFromCart(item));
-    toast.success("Delete cart")
-  }
+   
+    toast.dismiss();
+  
+    setTimeout(() => {
+      dispatch(deleteFromCart(item));
+      toast.success('Deleted from cart');
+    }, 1000); // You can adjust the delay as needed
+  };
 
   useEffect(() => {
     localStorage.setItem('cart', JSON.stringify(cartItems));
