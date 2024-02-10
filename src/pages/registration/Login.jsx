@@ -53,7 +53,7 @@ function Login() {
     return (
         <Layout>
  <div className='flex justify-center items-center h-screen'>
-            {loading && <Loader/>}
+          
             <div className='bg-gray-800 px-10 py-16 rounded-xl w-full max-w-md' style={{ backgroundColor: '#908a81' }}>
                 <div>
                     <h1 className='text-center text-white text-xl mb-6 font-bold'>Login</h1>

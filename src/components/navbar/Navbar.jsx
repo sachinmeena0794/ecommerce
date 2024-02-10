@@ -3,15 +3,23 @@ import { FiMenu, FiShoppingCart, FiLogIn } from "react-icons/fi";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import SideMenu from "./SideMenu";
+import { getAuth } from 'firebase/auth';
+
 
 function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false); // State to track if the menu is open
 
   const user = JSON.parse(localStorage.getItem("user"));
   const navigate = useNavigate();
-  const logout = () => {
-    localStorage.clear("user");
-    navigate("/login");
+  const logout = async () => {
+    try {
+      await getAuth().signOut(); // Call the signOut method to log the user out
+      localStorage.clear("user");
+      navigate("/login"); // Optional: You can also redirect the user to the login page or perform other actions after logout
+    } catch (error) {
+      console.error('Error logging out:', error.message);
+    }
+  
   };
 
   const cartItems = useSelector((state) => state.cart);
@@ -44,7 +52,7 @@ function Navbar() {
                   <h1 className=" text-2xl font-bold text-black  px-2 py-1 rounded">
                     HEKAWY
                   </h1>
-                
+
                   {/* Cart */}
                   {!user && (
                     <Link
