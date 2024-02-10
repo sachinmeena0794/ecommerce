@@ -1,21 +1,31 @@
 import React, { useContext, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 import myContext from '../../context/data/myContext';
 import Carousel from 'react-bootstrap/Carousel';
 import Layout from '../../components/layout/Layout';
+import Loader from '../../components/loader/Loader';
 
 const SHOP = () => {
     const context = useContext(myContext);
-    const lookImages = context.look[0]?.look[0]; // Assuming lookImages is an object containing image URLs
     const [activeIndex, setActiveIndex] = useState(0); // State to manage active index of main carousel
+    const navigate = useNavigate();
 
-    // Check if lookImages is defined
+    // Destructure lookImages from context
+    const { look } = context;
+    const lookImages = look[0]?.look[0];
+    const productID = look[0]?.look[1];// Assuming lookImages is an object containing image URLs
+
+
     if (!lookImages) {
-        return <div>Loading...</div>; // or any other loading indicator
+        return <Loader />; // Render the loader while data is being fetched
     }
 
     // Extract the main image URL and thumbnail image URLs
     const mainImageKey = Object.keys(lookImages)[activeIndex];
     const mainImageUrl = lookImages[mainImageKey];
+    const idKey= Object.keys(productID)[activeIndex];
+    const id=productID[idKey]
     const thumbnailImages = Object.values(lookImages).filter((_, index) => index !== activeIndex);
 
     // Calculate the height of the main image
@@ -30,9 +40,9 @@ const SHOP = () => {
                         <img
                             className="d-block w-100"
                             src={mainImageUrl}
-                            alt={`Product ${activeIndex}`}
+                            alt={`Product${activeIndex}`}
                             style={{ height: 'auto', maxHeight: `${mainImageHeight}px`, maxWidth: '100%', objectFit: 'contain', transition: 'transform 0.3s ease-in-out', cursor: 'pointer', borderRadius: '5px' }}
-                            onClick={() => setActiveIndex(activeIndex)}
+                            onClick={() => navigate(`/productinfo/${id}`)}
                             onMouseEnter={(e) => { e.target.style.transform = 'scale(1.15)'; }}
                             onMouseLeave={(e) => { e.target.style.transform = 'scale(1)'; }}
                         />

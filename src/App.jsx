@@ -20,6 +20,7 @@ const Signup = lazy (()=>import('./pages/registration/Signup'));
 const ProductInfo = lazy (()=>import('./pages/productInfo/ProductInfo'));
 const AddProduct = lazy (()=>import('./pages/admin/page/AddProduct'));
 const UpdateProduct = lazy (()=>import('./pages/admin/page/UpdateProduct'));
+const UpdateLook = lazy (()=>import('./pages/admin/page/updateLook'));
 const Allproducts = lazy (()=>import('./pages/allproducts/Allproducts'));
 const Loader = lazy (()=>import("./components/loader/Loader"))
 const Look = lazy (()=>import('./pages/shop/shop'));
@@ -53,6 +54,11 @@ function App() {
           <Route path='/addproduct' element={
             <ProtectedRouteForAdmin>
               <AddProduct/>
+            </ProtectedRouteForAdmin>
+          } />
+           <Route path='/lookupdate' element={
+            <ProtectedRouteForAdmin>
+              <UpdateLook/>
             </ProtectedRouteForAdmin>
           } />
           <Route path='/updateproduct' element={

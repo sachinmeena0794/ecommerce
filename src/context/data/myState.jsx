@@ -19,13 +19,8 @@ function myState(props) {
     }
 
     const [loading, setLoading] = useState(false);
-    function generateUniqueId() {
-        const timestamp = new Date().getTime();
-        const randomNum = Math.random() * 1000000;
-        return `${timestamp}-${randomNum}`;
-      }
     const [products, setProducts] = useState({
-        id: generateUniqueId(),
+        id_: null,
         title: null,
         quantity :1,
         price: null,

@@ -6,6 +6,7 @@ import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth, fireDB } from '../../fireabase/FirebaseConfig';
 import { Timestamp, addDoc, collection } from 'firebase/firestore';
 import Loader from '../../components/loader/Loader';
+import Layout from '../../components/layout/Layout';
 
 function Signup() {
     const [name, setName] = useState("");
@@ -24,8 +25,7 @@ function Signup() {
 
         try {
             const users = await createUserWithEmailAndPassword(auth, email, password);
-
-            console.log(users)
+            localStorage.setItem('user', JSON.stringify(users.user));
 
             const user = {
                 name: name,
@@ -49,7 +49,8 @@ function Signup() {
     }
 
     return (
-        <div className='flex justify-center items-center h-screen'>
+        <Layout>
+             <div className='flex justify-center items-center h-screen'>
             {loading && <Loader/>}
             <div className='bg-gray-800 px-10 py-16 rounded-xl w-full max-w-md' style={{ backgroundColor: '#908a81' }}>
                 <div className="">
@@ -60,7 +61,7 @@ function Signup() {
                         value={name}
                         onChange={(e) => setName(e.target.value)}
                         name='name'
-                        className='bg-gray-600 mb-4 px-2 py-2 w-full rounded-lg text-white placeholder:text-black-200'
+                        className='bg-gray-600 mb-4 px-2 py-2 w-full rounded-lg text-black placeholder:text-black-200'
                         placeholder='Name'
                         style={{ backgroundColor: '#e2e0dc' }}
                     />
@@ -71,7 +72,7 @@ function Signup() {
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         name='email'
-                        className='bg-gray-600 mb-4 px-2 py-2 w-full rounded-lg text-white placeholder:text-black-200'
+                        className='bg-gray-600 mb-4 px-2 py-2 w-full rounded-lg text-black placeholder:text-black-200'
                         placeholder='Email'
                         style={{ backgroundColor: '#e2e0dc' }}
                     />
@@ -81,7 +82,7 @@ function Signup() {
                         type="password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
-                        className='bg-gray-600 mb-4 px-2 py-2 w-full rounded-lg text-white placeholder:text-black-200'
+                        className='bg-gray-600 mb-4 px-2 py-2 w-full rounded-lg text-black placeholder:text-black-200'
                         placeholder='Password'
                         style={{ backgroundColor: '#e2e0dc' }}
                     />
@@ -89,15 +90,20 @@ function Signup() {
                 <div className='flex justify-center mb-3'>
                     <button
                         onClick={signup}
-                        className='bg-yellow-500 w-full text-black font-bold px-2 py-2 rounded-lg'>
+                        className='bg-black w-full text-white font-bold px-2 py-2 rounded-lg'>
                         Signup
                     </button>
                 </div>
                 <div>
-                    <h2 className='text-white'>Have an account <Link className='text-yellow-500 font-bold' to={'/login'}>Login</Link></h2>
+                    <h2 className='text-white'>Have an account <Link className='text-black font-bold' 
+    style={{ transition: 'transform 0.3s ease-in-out', display: 'inline-block' }}
+    onMouseEnter={(e) => { e.target.style.transform = 'scale(1.15)'; }}
+    onMouseLeave={(e) => { e.target.style.transform = 'scale(1)'; }} to={'/login'}>Login</Link></h2>
                 </div>
             </div>
         </div>
+        </Layout>
+       
     )
 }
 

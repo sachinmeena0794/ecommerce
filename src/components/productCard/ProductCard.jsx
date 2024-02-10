@@ -41,11 +41,11 @@ function ProductCard({ products, showDetails }) { // Receive 'products' and 'sho
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4"> {/* Gap between columns */}
             {products.map((item, index) => {
-              const { imageUrl, id, title, price } = item;
+              const { imageUrl, _id, title, price } = item;
               return (
                 <div key={index} className="p-4 drop-shadow-lg" style={{ marginBottom: '20px' }}> {/* Added marginBottom */}
                   <div className="flex flex-col h-full">
-                    <div onClick={() => navigate(`/productinfo/${id}`)} className="flex justify-center cursor-pointer h-96"> {/* Increased height for each product container */}
+                    <div onClick={() => navigate(`/productinfo/${_id}`)} className="flex justify-center cursor-pointer h-96"> {/* Increased height for each product container */}
                       <img className="object-cover w-full h-full hover:scale-110 transition-scale-180 duration-300 ease-in-out" src={imageUrl} alt="product" /> {/* Adjusted size of the image */}
                     </div>
                     {/* Conditionally render additional details based on the showDetails prop */}

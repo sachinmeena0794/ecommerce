@@ -5,6 +5,7 @@ import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../../fireabase/FirebaseConfig';
 import { toast } from 'react-toastify';
 import Loader from '../../components/loader/Loader';
+import Layout from '../../components/layout/Layout';
 
 function Login() {
     const context = useContext(myContext)
@@ -30,6 +31,7 @@ function Login() {
                 theme: "colored",
             });
             localStorage.setItem('user', JSON.stringify(result));
+            console.log(JSON.stringify(result))
             navigate('/');
         } catch (error) {
             console.log(error);
@@ -49,7 +51,8 @@ function Login() {
     
    
     return (
-        <div className='flex justify-center items-center h-screen'>
+        <Layout>
+ <div className='flex justify-center items-center h-screen'>
             {loading && <Loader/>}
             <div className='bg-gray-800 px-10 py-16 rounded-xl w-full max-w-md' style={{ backgroundColor: '#908a81' }}>
                 <div>
@@ -61,7 +64,7 @@ function Login() {
                         value={email}
                         onChange={(e)=> setEmail(e.target.value)}
                         name='email'
-                        className='bg-gray-600 mb-6 px-4 py-3 w-full rounded-lg text-white placeholder:text-black-200 outline-none'
+                        className='bg-gray-600 mb-6 px-4 py-3 w-full rounded-lg text-black placeholder:text-black-200 outline-none'
                         placeholder='Email'
                         style={{ backgroundColor: '#e2e0dc' }}
                     />
@@ -71,7 +74,7 @@ function Login() {
                         type="password"
                         value={password}
                         onChange={(e)=> setPassword(e.target.value)}
-                        className='bg-gray-600 mb-6 px-4 py-3 w-full rounded-lg text-white placeholder:text-black-200 outline-none'
+                        className='bg-gray-600 mb-6 px-4 py-3 w-full rounded-lg text-black placeholder:text-black-200 outline-none'
                         placeholder='Password'
                         style={{ backgroundColor: ' #e2e0dc' }}
                     />
@@ -79,15 +82,20 @@ function Login() {
                 <div className='flex justify-center mb-6'>
                     <button
                         onClick={login}
-                        className='bg-yellow-500 w-full text-black font-bold px-4 py-3 rounded-lg'>
+                        className='bg-black w-full text-white font-bold px-4 py-3 rounded-lg'>
                         Login
                     </button>
                 </div>
                 <div>
-                    <h2 className='text-white text-center'>Don't have an account <Link className='text-yellow-500 font-bold' to={'/signup'}>Signup</Link></h2>
+                    <h2 className='text-white text-center'>Don't have an account <Link className='text-black font-bold' 
+    style={{ transition: 'transform 0.3s ease-in-out', display: 'inline-block' }}
+    onMouseEnter={(e) => { e.target.style.transform = 'scale(1.15)'; }}
+    onMouseLeave={(e) => { e.target.style.transform = 'scale(1)'; }} to={'/signup'}>Signup</Link></h2>
                 </div>
             </div>
         </div>
+        </Layout>
+       
     )
 }
 

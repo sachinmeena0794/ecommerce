@@ -1,11 +1,13 @@
 import React, { useContext } from 'react'
 import myContext from '../../../context/data/myContext';
+import Layout from '../../../components/layout/Layout';
 
 function UpdateProduct() {
     const context = useContext(myContext);
     const { products, setProducts, updateProduct } = context;
     return (
-        <div>
+        <Layout>
+              <div>
             <div className=' flex justify-center items-center h-screen'>
                 <div className=' bg-gray-800 px-10 py-10 rounded-xl '>
                     <div className="">
@@ -67,6 +69,8 @@ function UpdateProduct() {
                 </div>
             </div>
         </div>
+        </Layout>
+      
     )
 }
 

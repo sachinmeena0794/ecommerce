@@ -3,7 +3,7 @@ import Layout from '../../components/layout/Layout';
 import myContext from '../../context/data/myContext';
 import { useParams } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
-import { doc, getDoc } from 'firebase/firestore';
+import { collection, query, where, getDocs } from 'firebase/firestore';
 import { toast } from 'react-toastify';
 import { addToCart } from '../../redux/cartSlice';
 import { fireDB } from '../../fireabase/FirebaseConfig';
@@ -21,12 +21,13 @@ function ProductInfo() {
         const getProductData = async () => {
             setLoading(true);
             try {
-                const productDoc = await getDoc(doc(fireDB, "products", params.id));
-                if (productDoc.exists()) {
-                    setProduct(productDoc.data());
-                } else {
-                    console.log("No such document!");
-                }
+                const productQuery = query(collection(fireDB, "products"), where("_id", "==", params.id));
+                const querySnapshot = await getDocs(productQuery);
+
+                querySnapshot.forEach((doc) => {
+                    setProduct(doc.data());
+                });
+                
                 setLoading(false);
             } catch (error) {
                 console.log(error);
