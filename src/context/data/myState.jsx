@@ -69,11 +69,36 @@ function myState(props) {
     }
 
     const [product, setProduct] = useState([]);
+    const [look, setLook] = useState([]);
+    const getLookData= async() =>{
+        try {
+            const q = query(
+                collection(fireDB, 'looks'),
+         
+            );
+
+            const data = onSnapshot(q, (QuerySnapshot) => {
+                let looksArray = [];
+                QuerySnapshot.forEach((doc) => {
+                    looksArray.push({ ...doc.data(), id: doc.id });
+                });
+                setLook(looksArray);
+               
+            });
+
+            return () => data;
+
+        } catch (error) {
+            console.log(error)
+            setLoading(false)
+        }
+        
+    }
 
     const getProductData = async () => {
 
         setLoading(true)
-
+        getLookData()
         try {
             const q = query(
                 collection(fireDB, 'products'),
@@ -193,7 +218,7 @@ function myState(props) {
     return (
         <MyContext.Provider value={{
             mode, toggleMode, loading, setLoading,
-            products, setProducts, addProduct, product,
+            products, setProducts, addProduct, product,look,
             edithandle, updateProduct, deleteProduct, order,
             user, searchkey, setSearchkey,filterType,setFilterType,
             filterPrice,setFilterPrice

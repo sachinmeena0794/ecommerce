@@ -13,8 +13,9 @@ function SideMenu({ onClose, user, logout }) {
 </button>
 
                 <div className="mt-32">
-                  <Link to={'/allproducts'} onClick={onClose} className="block mb-8 text-gray-300 menu-item text-3xl transition-all duration-300 hover:text-white hover:text-4xl">All Products</Link>
-                  {user ? <Link to={'/order'} onClick={onClose} className="block mb-8 text-gray-300 menu-item text-3xl transition-all duration-300 hover:text-white hover:text-4xl">Order</Link> : <Link to={'/signup'} onClick={onClose} className="block mb-4 text-gray-300 transition-all duration-300 hover:text-white hover:text-4xl">Signup</Link>}
+                  <Link to={'/shop'} onClick={onClose} className="block mb-8 text-gray-300 menu-item text-3xl transition-all duration-300 hover:text-white hover:text-4xl">Shop</Link>
+                  <Link to={'/look'} onClick={onClose} className="block mb-8 text-gray-300 menu-item text-3xl transition-all duration-300 hover:text-white hover:text-4xl">Looks</Link>
+                  {user ? <Link to={'/order'} onClick={onClose} className="block mb-8 text-gray-300 menu-item text-3xl transition-all duration-300 hover:text-white hover:text-4xl">Order</Link> : <Link to={'/signup'} onClick={onClose} className="block mb-8 text-gray-300 menu-item text-3xl transition-all duration-300 hover:text-white hover:text-4xl">Signup</Link>}
                   {user?.user?.email === 'skillsuup@gmail.com' && <Link to={'/dashboard'} onClick={onClose} className="block mb-8 text-gray-300 menu-item text-3xl transition-all duration-300 hover:text-white hover:text-4xl">Admin</Link>}
                   {user && <button onClick={logout} className="block mb-8 text-gray-300 text-3xl transition-all duration-300 hover:text-white hover:text-4xl">Logout</button>}
                 </div>

@@ -49,9 +49,9 @@ function Signup() {
     }
 
     return (
-        <div className=' flex justify-center items-center h-screen'>
+        <div className='flex justify-center items-center h-screen'>
             {loading && <Loader/>}
-            <div className=' bg-gray-800 px-10 py-10 rounded-xl '>
+            <div className='bg-gray-800 px-10 py-16 rounded-xl w-full max-w-md' style={{ backgroundColor: '#908a81' }}>
                 <div className="">
                     <h1 className='text-center text-white text-xl mb-4 font-bold'>Signup</h1>
                 </div>
@@ -60,8 +60,9 @@ function Signup() {
                         value={name}
                         onChange={(e) => setName(e.target.value)}
                         name='name'
-                        className=' bg-gray-600 mb-4 px-2 py-2 w-full lg:w-[20em] rounded-lg text-white placeholder:text-gray-200 outline-none'
+                        className='bg-gray-600 mb-4 px-2 py-2 w-full rounded-lg text-white placeholder:text-black-200'
                         placeholder='Name'
+                        style={{ backgroundColor: '#e2e0dc' }}
                     />
                 </div>
 
@@ -70,8 +71,9 @@ function Signup() {
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         name='email'
-                        className=' bg-gray-600 mb-4 px-2 py-2 w-full lg:w-[20em] rounded-lg text-white placeholder:text-gray-200 outline-none'
+                        className='bg-gray-600 mb-4 px-2 py-2 w-full rounded-lg text-white placeholder:text-black-200'
                         placeholder='Email'
+                        style={{ backgroundColor: '#e2e0dc' }}
                     />
                 </div>
                 <div>
@@ -79,19 +81,20 @@ function Signup() {
                         type="password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
-                        className=' bg-gray-600 mb-4 px-2 py-2 w-full lg:w-[20em] rounded-lg text-white placeholder:text-gray-200 outline-none'
+                        className='bg-gray-600 mb-4 px-2 py-2 w-full rounded-lg text-white placeholder:text-black-200'
                         placeholder='Password'
+                        style={{ backgroundColor: '#e2e0dc' }}
                     />
                 </div>
-                <div className=' flex justify-center mb-3'>
+                <div className='flex justify-center mb-3'>
                     <button
                         onClick={signup}
-                        className=' bg-red-500 w-full text-white font-bold  px-2 py-2 rounded-lg'>
+                        className='bg-yellow-500 w-full text-black font-bold px-2 py-2 rounded-lg'>
                         Signup
                     </button>
                 </div>
                 <div>
-                    <h2 className='text-white'>Have an account <Link className=' text-red-500 font-bold' to={'/login'}>Login</Link></h2>
+                    <h2 className='text-white'>Have an account <Link className='text-yellow-500 font-bold' to={'/login'}>Login</Link></h2>
                 </div>
             </div>
         </div>

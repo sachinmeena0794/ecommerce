@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import myContext from '../../context/data/myContext';
 import Loader from '../loader/Loader'; // Import the loader component
 import { useDispatch, useSelector } from 'react-redux';
 import { addToCart } from '../../redux/cartSlice';
@@ -31,7 +30,7 @@ function ProductCard({ products, showDetails }) { // Receive 'products' and 'sho
   return (
     <section className="text-gray-600 body-font">
       <div className="container px-5 py-8 md:py-16 mx-auto">
-       { !showDetails && <h1 className={`text-3xl md:text-4xl lg:text-5xl font-bold }`}>
+       {  <h1 className={`text-lg md:text-3xl lg:text-3xl font-bold }`}>
           Our Latest Collection
         </h1>}
         <hr className="border-t-3 border-gray-500  mb-8 w-80" /> {/* Horizontal rule with increased border color */}
@@ -56,7 +55,7 @@ function ProductCard({ products, showDetails }) { // Receive 'products' and 'sho
                         <p className="text-sm font-semibold text-gray-700">₹{price}</p>
                         <button
   onClick={() => handleBuyNow(item)}
-  className="bg-blue-500 text-white py-2 px-4 rounded-lg mt-2"
+  className="bg-black text-white py-2 px-4 rounded-lg mt-2"
   style={{ cursor: 'pointer' }}
 >
   Buy Now

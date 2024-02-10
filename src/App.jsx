@@ -8,19 +8,7 @@ import {
 
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-// lazy(() => import("./pages/home"));
-// import Home from './pages/home/Home';
-// import Order from './pages/order/Order';
-// import Cart from './pages/cart/Cart';
-// import Dashboard from './pages/admin/dashboard/Dashboard';
-// import NoPage from './pages/nopage/NoPage';
-// import MyState from './context/data/myState';
-// import Login from './pages/registration/Login';
-// import Signup from './pages/registration/Signup';
-// mport ProductInfo from './pages/productInfo/ProductInfo';
-// import AddProduct from './pages/admin/page/AddProduct';
-// import UpdateProduct from './pages/admin/page/UpdateProduct';
-// import Allproducts from './pages/allproducts/Allproducts';
+
 const Home = lazy (()=>import('./pages/home/Home'));
 const Order = lazy (()=>import('./pages/order/Order'));
 const Cart = lazy (()=>import('./pages/cart/Cart'));
@@ -34,6 +22,7 @@ const AddProduct = lazy (()=>import('./pages/admin/page/AddProduct'));
 const UpdateProduct = lazy (()=>import('./pages/admin/page/UpdateProduct'));
 const Allproducts = lazy (()=>import('./pages/allproducts/Allproducts'));
 const Loader = lazy (()=>import("./components/loader/Loader"))
+const Look = lazy (()=>import('./pages/shop/shop'));
 
 
 
@@ -45,7 +34,8 @@ function App() {
       <Suspense fallback= {<Loader/>}>
       <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/allproducts" element={<Allproducts />} />
+          <Route path="/shop" element={<Allproducts />} />
+          <Route path="/look" element={<Look />} />
           <Route path="/order" element={
             <ProtectedRoute>
               <Order />
@@ -70,7 +60,7 @@ function App() {
               <UpdateProduct/>
             </ProtectedRouteForAdmin>
           } />
-          <Route path="/*" element={<NoPage />} />
+          <Route path="/*" element={<Home />} />
         </Routes>
         <ToastContainer/>
       </Suspense>
