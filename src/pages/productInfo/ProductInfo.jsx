@@ -42,7 +42,6 @@ function ProductInfo() {
 
     const handleAddToCart = () => {
         dispatch(addToCart(product));
-        toast.success('Added to cart');
     };
 
     useEffect(() => {

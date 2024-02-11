@@ -33,38 +33,40 @@ const SHOP = () => {
 
     return (
         <Layout>
-            <div className="shop-container" style={{ border: '1px solid #ccc', textAlign: 'center', paddingTop: '20px', backgroundColor: '#f2f2f2', padding: '20px', marginBottom: '50px' }}>
-                {/* Main image carousel */}
-                <Carousel activeIndex={activeIndex} onSelect={setActiveIndex} indicators={false} controls={false} style={{ maxWidth: '80%', margin: 'auto' }}>
-                    <Carousel.Item key={mainImageKey} style={{ display: 'flex', justifyContent: 'center' }}>
-                        <img
-                            className="d-block w-100"
-                            src={mainImageUrl}
-                            alt={`Product${activeIndex}`}
-                            style={{ height: 'auto', maxHeight: `${mainImageHeight}px`, maxWidth: '100%', objectFit: 'contain', transition: 'transform 0.3s ease-in-out', cursor: 'pointer', borderRadius: '5px' }}
-                            onClick={() => navigate(`/productinfo/${id}`)}
-                            onMouseEnter={(e) => { e.target.style.transform = 'scale(1.15)'; }}
-                            onMouseLeave={(e) => { e.target.style.transform = 'scale(1)'; }}
-                        />
-                    </Carousel.Item>
-                </Carousel>
-                {/* Thumbnail images */}
-                <div className="thumbnail-container" style={{ display: 'flex', justifyContent: 'center', marginTop: '20px', marginBottom: '20px',zIndex:"10" }}>
-                    {Object.entries(lookImages).map(([key, url], index) => (
-                        index !== activeIndex &&
-                        <img
-                            key={key}
-                            src={url}
-                            alt={`Thumbnail ${index}`}
-                            style={{ width: '80px', height: '80px', marginRight: '10px', marginBottom: '10px', cursor: 'pointer', transition: 'transform 0.3s ease-in-out', borderRadius: '5px', opacity: index === activeIndex ? '0.5' : '1' }}
-                            onClick={() => setActiveIndex(index)}
-                            onMouseEnter={(e) => { e.target.style.transform = 'scale(1.05)'; }}
-                            onMouseLeave={(e) => { e.target.style.transform = 'scale(1)'; }}
-                        />
-                    ))}
-                </div>
-            </div>
-        </Layout>
+        <div className="shop-container" style={{ border: '1px solid #ccc', textAlign: 'center', paddingTop: '20px', backgroundColor: '#4e3c3c', padding: '20px', marginBottom: '50px',opacity:".9" }}>
+          {/* Main image carousel */}
+          <Carousel activeIndex={activeIndex} onSelect={setActiveIndex} indicators={false} controls={false} style={{ maxWidth: '80%', margin: 'auto' }}>
+            <Carousel.Item key={mainImageKey} style={{ display: 'flex', justifyContent: 'center' }}>
+              <img
+                className="d-block w-100 main-image"
+                src={mainImageUrl}
+                alt={`Product${activeIndex}`}
+                style={{ height: 'auto', maxHeight: `${mainImageHeight}px`, maxWidth: '100%', objectFit: 'contain', transition: 'transform 0.3s ease-in-out', cursor: 'pointer', borderRadius: '5px' }}
+                onClick={() => navigate(`/productinfo/${id}`)}
+                onMouseEnter={(e) => { e.target.style.transform = 'scale(1.15)'; }}
+                onMouseLeave={(e) => { e.target.style.transform = 'scale(1)'; }}
+              />
+            </Carousel.Item>
+          </Carousel>
+          {/* Thumbnail images */}
+          <div className="thumbnail-container" style={{ display: 'flex', justifyContent: 'center', marginTop: '20px', marginBottom: '20px', zIndex: "10" }}>
+            {Object.entries(lookImages).map(([key, url], index) => (
+              index !== activeIndex &&
+              <img
+                key={key}
+                src={url}
+                alt={`Thumbnail ${index}`}
+                className={`thumbnail-image ${index === activeIndex ? 'active' : ''}`}
+                onClick={() => setActiveIndex(index)}
+                onMouseEnter={(e) => { e.target.style.transform = 'scale(1.15)'; }}
+                onMouseLeave={(e) => { e.target.style.transform = 'scale(1)'; }}
+              />
+            ))}
+          </div>
+        </div>
+      </Layout>
+      
+      
     );
 }
 

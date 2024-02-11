@@ -4,6 +4,7 @@ import Loader from '../loader/Loader'; // Import the loader component
 import { useDispatch, useSelector } from 'react-redux';
 import { addToCart } from '../../redux/cartSlice';
 import { toast } from 'react-toastify';
+import { Link } from 'react-router-dom';
 
 
 function ProductCard({ products, showDetails }) { // Receive 'products' and 'showDetails' as props
@@ -11,11 +12,9 @@ function ProductCard({ products, showDetails }) { // Receive 'products' and 'sho
   const [productsLoaded, setProductsLoaded] = useState(false); // State variable to track whether the products are loaded
   const dispatch = useDispatch();
   const handleBuyNow = (product) => {
-    toast.dismiss();
-    setTimeout(() => {
+   
       dispatch(addToCart(product));
-      toast.success('Added to cart');
-    }, 500); 
+     
   };
   useEffect(() => {
     // Check if the product data is available
@@ -68,6 +67,15 @@ function ProductCard({ products, showDetails }) { // Receive 'products' and 'sho
             })}
           </div>
         )}
+        {
+          !showDetails &&
+          <Link to={'/shop'}>
+        <button className='bg-gray-300 px-5 py-2 rounded-xl text-lg transition duration-300 ease-in-out hover:bg-gray-400 hover:text-white mt-4'
+        style={{position:'relative', bottom:'20px',left:'0'}}>
+          See more
+        </button>
+      </Link>
+        }
       </div>
     </section>
   );
