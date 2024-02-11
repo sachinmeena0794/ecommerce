@@ -92,7 +92,8 @@ function Signup() {
                             <button
                                 type="button"
                                 onClick={() => setShowPassword(!showPassword)}
-                                className='absolute inset-y-0 right-0 px-4 mb-3 text-black rounded-r-lg focus:outline-none flex items-center justify-center'
+                                className='absolute inset-y-0 right-0 px-4  text-black rounded-r-lg focus:outline-none flex items-center justify-center'
+                                style={{marginBottom:'15px'}}
                             >
                                 {showPassword ? <FaEyeSlash /> : <FaEye />}
                             </button>

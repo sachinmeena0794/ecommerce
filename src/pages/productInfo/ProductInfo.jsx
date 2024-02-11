@@ -65,13 +65,13 @@ function ProductInfo() {
                                 />
                             </div>
                             <div className="lg:w-1/2 w-full lg:pl-10 lg:py-6 mt-6 lg:mt-0">
-                                <h2 className="text-sm title-font text-gray-500 tracking-widest mb-3">
+                                <h2 className="text-sm title-font text-gray-500 tracking-widest mb-2">
                                     BRAND NAME
                                 </h2>
-                                <h1 className="text-gray-900 text-3xl title-font font-medium mb-4">
+                                <h1 className="text-gray-900 text-3xl title-font font-medium mb-2">
                                     {product.title}
                                 </h1>
-                                <p className="leading-relaxed border-b-2 pb-5" style={{ maxHeight: '200px', overflow: 'auto', marginBottom: '20px' }}>
+                                <p className="leading-relaxed border-b-2 " style={{ maxHeight: '200px', overflow: 'auto', marginBottom: '10px' }}>
                                     {product.description}
                                 </p>
                                 <div className="flex items-center">
