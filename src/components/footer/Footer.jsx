@@ -7,7 +7,7 @@ function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-<footer className="text-gray-600 body-font bg-gray-300 fixed bottom-0 w-full" style={{ maxHeight: '80px', overflow: 'hidden' }}>
+<footer className="text-gray-600 body-font bg-gray-300 fixed bottom-0 w-full" style={{ maxHeight: '60px', overflow: 'hidden' }}>
   {/* Bottom section */}
   <div className="container px-5 mx-auto flex flex-col md:flex-row items-center justify-between">
     <div className='flex items-center'>

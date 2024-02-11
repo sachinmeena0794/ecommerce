@@ -49,9 +49,11 @@ function ProductCard({ products, showDetails }) { // Receive 'products' and 'sho
                     </div>
                     {/* Conditionally render additional details based on the showDetails prop */}
                     {showDetails && (
-                      <div className="mt-4">
-                        <h3 className="text-lg font-bold">{title}</h3>
-                        <p className="text-sm font-semibold text-gray-700">₹{price}</p>
+                      <div className="mt-4 ">
+                            <h3 className="text-lg font-bold">{title}</h3>
+                        <div className="m flex">
+                    
+                        <p className="text-lg font-semibold text-gray-700 py-4 px-4">₹{price}</p>
                         <button
   onClick={() => handleBuyNow(item)}
   className="bg-black text-white py-2 px-4 rounded-lg mt-2"
@@ -60,6 +62,8 @@ function ProductCard({ products, showDetails }) { // Receive 'products' and 'sho
   Buy Now
 </button>
                       </div>
+                      </div>
+                      
                     )}
                   </div>
                 </div>
@@ -71,7 +75,7 @@ function ProductCard({ products, showDetails }) { // Receive 'products' and 'sho
           !showDetails &&
           <Link to={'/shop'}>
         <button className='bg-gray-300 px-5 py-2 rounded-xl text-lg transition duration-300 ease-in-out hover:bg-gray-400 hover:text-white mt-4'
-        style={{position:'relative', bottom:'20px',left:'0'}}>
+        style={{position:'relative', bottom:'30px',left:'0'}}>
           See more
         </button>
       </Link>

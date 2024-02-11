@@ -31,14 +31,12 @@ function Filter() {
         <div className='container mx-auto px-4 mt-5'>
             <div className="p-5 rounded-lg bg-gray-100 border border-gray-200">
                 <div className="flex items-center justify-between mt-4">
-                    <p className="font-medium">
+                    <p className="text-lg">
                         Filters
                     </p>
-                    <button onClick={handleReset} className="px-4 py-2 bg-gray-50 hover:bg-gray-300 text-gray-800 text-sm font-medium rounded-md transition-colors duration-300 ease-in-out">
-                        Reset Filter
-                    </button>
+                 
                 </div>
-                <div>
+                <div className='flex'> 
                     <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 mt-4">
                         <select
                             value={selectedCategory}
@@ -50,6 +48,9 @@ function Filter() {
                                 <option key={index} value={category}>{category}</option>
                             ))}
                         </select>
+                        <button onClick={handleReset} className="px-4 py-2 bg-gray-50 hover:bg-gray-300 text-gray-800 text-sm font-medium rounded-md transition-colors duration-300 ease-in-out">
+                        Reset Filter
+                    </button>
                     </div>
                 </div>
             </div>
