@@ -54,7 +54,7 @@ function ProductInfo() {
   return (
     <Layout>
       <section className="text-gray-600 body-font overflow-hidden">
-        <div className="container px-5 py-10 mx-auto">
+        <div className="container px-5 py-16 mx-auto">
           {loading ? (
             <Loader /> // Display the loader while loading
           ) : (

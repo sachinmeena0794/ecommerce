@@ -15,13 +15,14 @@ function Footer() {
         <h1 className="text-lg md:text-3xl font-bold text-black px-2 mt-2 md:mt-4">HEKAWY</h1>
       </Link>
       <a href="https://www.skillsuup.com/" className="text-gray-600 ml-1 text-xs md:text-sm self-center">© {currentYear} HEKAWY</a>
-    </div>
-    <div className="flex md:mt-0">
+      <div className="flex md:mt-0">
       {/* Social media icons */}
       <a href="#" className="text-gray-600 hover:text-gray-800 mx-1 md:mx-2"><FaFacebook /></a>
       <a href="#" className="text-gray-600 hover:text-gray-800 mx-1 md:mx-2"><FaTwitter /></a>
       <a href="#" className="text-gray-600 hover:text-gray-800 mx-1 md:mx-2"><FaInstagram /></a>
     </div>
+    </div>
+    
   </div>
 </footer>
 
