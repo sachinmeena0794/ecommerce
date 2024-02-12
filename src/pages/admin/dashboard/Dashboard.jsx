@@ -48,7 +48,7 @@ function Dashboard() {
 
   return (
     <Layout>
-      <section className="text-gray-600 body-font h-screen flex flex-col justify-center items-center">
+<section className="text-gray-600 body-font flex flex-col justify-center items-center">
   <div className="container mx-auto px-4 mb-10">
     <div className="flex flex-wrap -m-4 text-center">
       <DashboardCard icon={<FaUserTie size={50} />} count={totalProducts} label="Total Products" />
@@ -59,6 +59,7 @@ function Dashboard() {
   </div>
   <DashboardTab />
 </section>
+
 
     </Layout>
   );

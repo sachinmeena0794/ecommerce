@@ -13,8 +13,11 @@ const SHOP = () => {
 
     // Destructure lookImages from context
     const { look } = context;
-    const lookImages = look[0]?.look[0];
-    const productID = look[0]?.look[1];// Assuming lookImages is an object containing image URLs
+    const lookImages =[];
+    lookImages.push(look[0]?.image1,look[0]?.image2,look[0]?.image3,look[0]?.image4) 
+    const productID = [];
+    productID.push(look[0]?.product1,look[0]?.product2,look[0]?.product3,look[0]?.product4)
+   
 
 
     if (!lookImages) {

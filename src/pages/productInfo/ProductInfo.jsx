@@ -60,17 +60,15 @@ function ProductInfo() {
           ) : (
             product && (
               <div className="lg:w-4/5 mx-auto flex flex-wrap items-center">
-                <div
-                  className="lg:w-1/2 w-full relative cursor-pointer"
-                  onClick={() => setShowModal(true)}
-                >
-                  <img
-                    alt="ecommerce"
-                    className="w-full h-auto object-cover object-center rounded-lg shadow-xl transition transform hover:scale-105 duration-300"
-                    src={product.imageUrl}
-                    style={{ maxHeight: "500px" }}
-                  />
-                </div>
+               <div className="lg:w-1/2 w-full relative cursor-pointer" onClick={() => setShowModal(true)} style={{ maxHeight: "400px" }}>
+  <img
+    alt="ecommerce"
+    className="w-full h-full object-cover object-center rounded-lg shadow-xl transition transform hover:scale-105 duration-300"
+    src={product.imageUrl}
+    style={{ maxHeight: "100%", objectFit: "cover" }}
+  />
+</div>
+
 
                 <div className="lg:w-1/2 w-full lg:pl-10 lg:py-6 mt-6 lg:mt-0">
                   <h2 className="text-sm title-font text-gray-500 tracking-widest mb-2">
@@ -79,18 +77,9 @@ function ProductInfo() {
                   <h1 className="text-gray-900 text-3xl title-font font-medium mb-2">
                     {product.title}
                   </h1>
-                  <p
-                    className="leading-relaxed border-b-2 "
-                    style={{
-                      maxHeight: "200px",
-                      overflow: "auto",
-                      marginBottom: "4px",
-                    }}
-                  >
-                    {product.description}
-                  </p>
                   <div className="flex items-center">
-                    <span className="title-font font-medium text-2xl text-gray-900 mr-4">
+                  
+                    <span className="title-font font-medium text-2xl text-gray-900 mr-4 mx-4">
                       ₹{product.price}
                     </span>
                     <button
@@ -100,6 +89,19 @@ function ProductInfo() {
                       Add To Cart
                     </button>
                   </div>
+                  
+                  <p
+                    className="leading-relaxed border-b-2 "
+                    style={{
+                      maxHeight: "200px",
+                      overflow: "auto",
+                      marginBottom: "4px",
+                      paddingBottom:"20px"
+                    }}
+                  >
+                    {product.description}
+                  </p>
+                
                 </div>
               </div>
             )

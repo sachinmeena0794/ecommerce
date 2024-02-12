@@ -18,7 +18,6 @@ function Footer() {
       <div className="flex md:mt-0">
       {/* Social media icons */}
       <a href="#" className="text-gray-600 hover:text-gray-800 mx-1 md:mx-2"><FaFacebook /></a>
-      <a href="#" className="text-gray-600 hover:text-gray-800 mx-1 md:mx-2"><FaTwitter /></a>
       <a href="#" className="text-gray-600 hover:text-gray-800 mx-1 md:mx-2"><FaInstagram /></a>
     </div>
     </div>

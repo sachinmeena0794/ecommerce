@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import MyContext from './myContext'
-import { Timestamp, addDoc, collection, deleteDoc, doc, getDocs, onSnapshot, orderBy, query, setDoc } from 'firebase/firestore';
+import { Timestamp, addDoc, collection, deleteDoc, doc, getDocs,getDoc, onSnapshot, orderBy, query, setDoc } from 'firebase/firestore';
 import { toast } from 'react-toastify';
 import { fireDB } from '../../fireabase/FirebaseConfig';
 
@@ -19,7 +19,8 @@ function myState(props) {
     }
 
     const [loading, setLoading] = useState(false);
-    const [products, setProducts] = useState({
+    const [products, setProducts] = useState(
+        {
         id_: null,
         title: null,
         quantity :1,
@@ -89,6 +90,49 @@ function myState(props) {
         }
         
     }
+// Inside myState component
+
+// Inside myState component
+
+const updateLook = async (updatedLookData) => {
+    setLoading(true);
+    try {
+        // Update the look
+        const lookDocRef = doc(fireDB, 'looks',"look1");
+        await setDoc(lookDocRef, updatedLookData);
+
+        // Iterate through the updated look data and update corresponding products
+        Object.keys(updatedLookData).forEach(async (key) => {
+            if (key.startsWith('product')) {
+                const productId = updatedLookData[key];
+                const imageKey = key.replace('product', 'image');
+                const imageUrl = updatedLookData[imageKey];
+
+                // Check if the product exists in the products collection
+                const productDocRef = doc(fireDB, 'products', productId);
+                const productSnapshot = await getDoc(productDocRef);
+
+                if (productSnapshot.exists()) {
+                    // Product exists, update the image URL
+                    await updateDoc(productDocRef, { imageUrl });
+                } else {
+                    // Product doesn't exist, create a new record
+                    await addDoc(collection(fireDB, 'products'), { id_: productId, imageUrl });
+                }
+            }
+        });
+
+        toast.success("Look updated successfully");
+        setLoading(false);
+    } catch (error) {
+        console.error("Error updating look:", error);
+        toast.error("Failed to update look");
+        setLoading(false);
+    }
+};
+
+
+
 
     const getProductData = async () => {
 
@@ -97,7 +141,7 @@ function myState(props) {
         try {
             const q = query(
                 collection(fireDB, 'products'),
-                orderBy('time')
+                
             );
 
             const data = onSnapshot(q, (QuerySnapshot) => {
@@ -213,7 +257,7 @@ function myState(props) {
     return (
         <MyContext.Provider value={{
             mode, toggleMode, loading, setLoading,
-            products, setProducts, addProduct, product,look,
+            products, setProducts, addProduct, product,look,updateLook,
             edithandle, updateProduct, deleteProduct, order,
             user, searchkey, setSearchkey,filterType,setFilterType,
             filterPrice,setFilterPrice

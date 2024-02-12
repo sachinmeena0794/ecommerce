@@ -33,25 +33,22 @@ function OrderDetails({ order }) {
     const sortedData = sortData(order);
     const paginatedData = paginateData(sortedData);
 
-    return paginatedData.map((allorder, index) => (
+    return paginatedData.map((orderData, index) => (
       <tr key={index} className="bg-gray-50 border-b dark:border-gray-700">
-        <td className="px-6 py-4 text-black">{allorder?.paymentId}</td>
-        <td className="px-6 py-4 text-black">₹{allorder?.grandTotal}</td>
-        <td className="px-6 py-4 text-black">{allorder?.addressInfo?.name}</td>
-        <td className="px-6 py-4 text-black">{allorder?.addressInfo?.address}</td>
-        <td className="px-6 py-4 text-black">{allorder?.addressInfo?.pincode}</td>
-        <td className="px-6 py-4 text-black">
-          {allorder?.addressInfo?.phoneNumber}
-        </td>
-        <td className="px-6 py-4 text-black">{allorder.email}</td>
-        <td className="px-6 py-4 text-black">{allorder.date}</td>
-      </tr>
+        <td className="px-6 py-4 text-black">{orderData?.paymentId}</td>
+        <td className="px-6 py-4 text-black">₹{orderData?.grandTotal}</td>
+        <td className="px-6 py-4 text-black">{orderData?.addressInfo?.name}</td>
+        <td className="px-6 py-4 text-black">{orderData?.addressInfo?.address}</td>
+        <td className="px-6 py-4 text-black">{orderData?.addressInfo?.pincode}</td>
+        <td className="px-6 py-4 text-black">{orderData?.addressInfo?.phoneNumber}</td>
+        <td className="px-6 py-4 text-black">{orderData?.email}</td>
+        <td className="px-6 py-4 text-black">{orderData?.date}</td>
+     </tr>
     ));
   };
-  const [sortedBy, setSortedBy] = useState(null);
+
   // Handle sorting
   const handleSort = (sortByField) => {
-    setSortedBy(sortByField);
     if (sortByField === sortBy) {
       setSortDesc(!sortDesc);
     } else {
@@ -61,82 +58,51 @@ function OrderDetails({ order }) {
   };
 
   return (
-    <div className="relative overflow-x-auto mb-16">
-      <h1 className="text-center mb-5 text-3xl font-semibold underline">
-        Order Details
-      </h1>
-      <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-        <thead className="text-xs text-black uppercase bg-gray-200">
-          <tr>
-            <th className="px-6 py-3" onClick={() => handleSort("paymentId")}>
-              Payment Id
-              {sortedBy === "paymentId" && <span>&darr;</span>}
-            </th>
-            <th className="px-6 py-3" onClick={() => handleSort("price")}>
-              Total
-              {sortedBy === "price" && <span>&darr;</span>}
-            </th>
-            <th
-              className="px-6 py-3"
-              onClick={() => handleSort("addressInfo.name")}
-            >
-              Name
-              {sortedBy === "addressInfo.name" && <span>&darr;</span>}
-            </th>
-            <th
-              className="px-6 py-3"
-              onClick={() => handleSort("addressInfo.address")}
-            >
-              Address
-              {sortedBy === "addressInfo.address" && <span>&darr;</span>}
-            </th>
-            <th
-              className="px-6 py-3"
-              onClick={() => handleSort("addressInfo.pincode")}
-            >
-              Pincode
-              {sortedBy === "addressInfo.pincode" && <span>&darr;</span>}
-            </th>
-            <th
-              className="px-6 py-3"
-              onClick={() => handleSort("addressInfo.phoneNumber")}
-            >
-              Phone Number
-              {sortedBy === "addressInfo.phoneNumber" && <span>&darr;</span>}
-            </th>
-            <th className="px-6 py-3" onClick={() => handleSort("email")}>
-              Email
-              {sortedBy === "email" && <span>&darr;</span>}
-            </th>
-            <th className="px-6 py-3" onClick={() => handleSort("date")}>
-              Date
-              {sortedBy === "date" && <span>&darr;</span>}
-            </th>
-          </tr>
-        </thead>
-
-        <tbody>{renderRows()}</tbody>
-      </table>
+    <div className="px-4 md:px-0 mb-16">
+      <h1 className="text-center mb-5 text-3xl font-semibold underline">Order Details</h1>
+      <div className="relative overflow-x-auto">
+        <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+          <thead className="text-xs border border-gray-600 text-black uppercase bg-gray-200 shadow-[inset_0_0_8px_rgba(0,0,0,0.6)]">
+            <tr>
+              <th className="px-6 py-3 cursor-pointer" onClick={() => handleSort("paymentId")}>
+                Payment Id {sortBy === "paymentId" && <span>{sortDesc ? "▼" : "▲"}</span>}
+              </th>
+              <th className="px-6 py-3" onClick={() => handleSort("grandTotal")}>
+                Total {sortBy === "grandTotal" && <span>{sortDesc ? "▼" : "▲"}</span>}
+              </th>
+              <th className="px-6 py-3" onClick={() => handleSort("addressInfo.name")}>
+                Name {sortBy === "addressInfo.name" && <span>{sortDesc ? "▼" : "▲"}</span>}
+              </th>
+              <th className="px-6 py-3" onClick={() => handleSort("addressInfo.address")}>
+                Address {sortBy === "addressInfo.address" && <span>{sortDesc ? "▼" : "▲"}</span>}
+              </th>
+              <th className="px-6 py-3" onClick={() => handleSort("addressInfo.pincode")}>
+                Pincode {sortBy === "addressInfo.pincode" && <span>{sortDesc ? "▼" : "▲"}</span>}
+              </th>
+              <th className="px-6 py-3" onClick={() => handleSort("addressInfo.phoneNumber")}>
+                Phone Number {sortBy === "addressInfo.phoneNumber" && <span>{sortDesc ? "▼" : "▲"}</span>}
+              </th>
+              <th className="px-6 py-3" onClick={() => handleSort("email")}>
+                Email {sortBy === "email" && <span>{sortDesc ? "▼" : "▲"}</span>}
+              </th>
+              <th className="px-6 py-3" onClick={() => handleSort("date")}>
+                Date {sortBy === "date" && <span>{sortDesc ? "▼" : "▲"}</span>}
+              </th>
+            </tr>
+          </thead>
+          <tbody>{renderRows()}</tbody>
+        </table>
+      </div>
       {/* Pagination controls */}
-      <div className="flex justify-center mt-5">
-        <button
-          disabled={pageIndex === 0}
-          onClick={() => setPageIndex(pageIndex - 1)}
-          className="px-4 py-2 mr-2 bg-gray-300 hover:bg-gray-400 rounded"
-        >
-          Previous
-        </button>
-        <button
-          disabled={(pageIndex + 1) * pageSize >= order.length}
-          onClick={() => setPageIndex(pageIndex + 1)}
-          className="px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded"
-        >
-          Next
-        </button>
+      <div className="flex justify-between mt-4">
+        <button onClick={() => setPageIndex(prev => prev - 1)} disabled={pageIndex === 0} className="px-4 py-2 bg-gray-200 text-gray-600 rounded-md disabled:opacity-50">Previous</button>
+        <span className="text-gray-600">Page {pageIndex + 1}</span>
+        <button onClick={() => setPageIndex(prev => prev + 1)} disabled={(pageIndex + 1) * pageSize >= order.length} className="px-4 py-2 bg-gray-200 text-gray-600 rounded-md disabled:opacity-50">Next</button>
       </div>
     </div>
   );
 }
+
 
 
 function UserDetails({ user }) {
@@ -185,55 +151,36 @@ function UserDetails({ user }) {
   };
 
   return (
-    <div className="relative overflow-x-auto mb-16">
-      <h1 className="text-center mb-5 text-3xl font-semibold underline">
-        User Details
-      </h1>
-      <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-        <thead className="text-xs text-black uppercase bg-gray-200">
-          <tr>
-            <th
-              className="px-6 py-3 cursor-pointer"
-              onClick={() => handleSort("name")}
-            >
-              Name {sortBy === "name" && <span>{sortDesc ? "▼" : "▲"}</span>}
-            </th>
-            <th
-              className="px-6 py-3 cursor-pointer"
-              onClick={() => handleSort("email")}
-            >
-              Email {sortBy === "email" && <span>{sortDesc ? "▼" : "▲"}</span>}
-            </th>
-            <th
-              className="px-6 py-3 cursor-pointer"
-              onClick={() => handleSort("uid")}
-            >
-              Uid {sortBy === "uid" && <span>{sortDesc ? "▼" : "▲"}</span>}
-            </th>
-          </tr>
-        </thead>
-        <tbody>{renderRows()}</tbody>
-      </table>
+    <div className="px-4 md:px-0 mb-16">
+      <h1 className="text-center mb-5 text-3xl font-semibold underline">User Details</h1>
+      <div className="relative overflow-x-auto">
+        <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+          <thead className="text-xs border border-gray-600 text-black uppercase bg-gray-200 shadow-[inset_0_0_8px_rgba(0,0,0,0.6)]">
+            <tr>
+              <th className="px-6 py-3 cursor-pointer" onClick={() => handleSort("name")}>
+                Name {sortBy === "name" && <span>{sortDesc ? "▼" : "▲"}</span>}
+              </th>
+              <th className="px-6 py-3 cursor-pointer" onClick={() => handleSort("email")}>
+                Email {sortBy === "email" && <span>{sortDesc ? "▼" : "▲"}</span>}
+              </th>
+              <th className="px-6 py-3 cursor-pointer" onClick={() => handleSort("uid")}>
+                Uid {sortBy === "uid" && <span>{sortDesc ? "▼" : "▲"}</span>}
+              </th>
+            </tr>
+          </thead>
+          <tbody>{renderRows()}</tbody>
+        </table>
+      </div>
       {/* Pagination controls */}
-      <div className="flex justify-center mt-5">
-        <button
-          disabled={pageIndex === 0}
-          onClick={() => setPageIndex(pageIndex - 1)}
-          className="px-4 py-2 mr-2 bg-gray-300 hover:bg-gray-400 rounded"
-        >
-          Previous
-        </button>
-        <button
-          disabled={(pageIndex + 1) * pageSize >= user.length}
-          onClick={() => setPageIndex(pageIndex + 1)}
-          className="px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded"
-        >
-          Next
-        </button>
+      <div className="flex justify-between mt-4">
+        <button onClick={() => setPageIndex(prev => prev - 1)} disabled={pageIndex === 0} className="px-4 py-2 bg-gray-200 text-gray-600 rounded-md disabled:opacity-50">Previous</button>
+        <span className="text-gray-600">Page {pageIndex + 1}</span>
+        <button onClick={() => setPageIndex(prev => prev + 1)} disabled={(pageIndex + 1) * pageSize >= user.length} className="px-4 py-2 bg-gray-200 text-gray-600 rounded-md disabled:opacity-50">Next</button>
       </div>
     </div>
   );
 }
+
 
 
 function ProductDetails({ product, deleteProduct, edithandle }) {
@@ -241,6 +188,7 @@ function ProductDetails({ product, deleteProduct, edithandle }) {
   const [sortDesc, setSortDesc] = useState(false);
   const [pageIndex, setPageIndex] = useState(0);
   const pageSize = 5; // Number of items per page
+  const navigate = useNavigate();
 
   // Sorting function
   const sortData = (data) => {
@@ -250,18 +198,28 @@ function ProductDetails({ product, deleteProduct, edithandle }) {
       return 0;
     });
   };
-  const navigate =useNavigate()
-  const add = () => {
-    navigate("/addproduct")
-  };
-  const update = () => {
-    navigate("/lookupdate")
-  };
 
   // Paginate data
   const paginateData = (data) => {
     const startIndex = pageIndex * pageSize;
     return data.slice(startIndex, startIndex + pageSize);
+  };
+
+  // Calculate total number of pages
+  const totalPages = Math.ceil(product.length / pageSize);
+
+  // Handle navigation to previous page
+  const prevPage = () => {
+    if (pageIndex > 0) {
+      setPageIndex((prevIndex) => prevIndex - 1);
+    }
+  };
+
+  // Handle navigation to next page
+  const nextPage = () => {
+    if (pageIndex < totalPages - 1) {
+      setPageIndex((prevIndex) => prevIndex + 1);
+    }
   };
 
   // Render table rows
@@ -275,7 +233,6 @@ function ProductDetails({ product, deleteProduct, edithandle }) {
         <td className="px-6 py-4 font-medium text-black whitespace-nowrap">
           <img className="w-16" src={item.imageUrl} alt="Product" />
         </td>
-        
         <td className="px-6 py-4 text-black">₹{item.price}</td>
         <td className="px-6 py-4 text-black">{item.category}</td>
         <td className="px-6 py-4 text-black">{item.date}</td>
@@ -297,8 +254,8 @@ function ProductDetails({ product, deleteProduct, edithandle }) {
                 />
               </svg>
             </div>
-            <Link to={"/updateproduct"}>
-              <div onClick={() => edithandle(item)}>
+            <div onClick={() => edithandle(item)}>
+              <Link to={"/updateproduct"}>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -313,8 +270,8 @@ function ProductDetails({ product, deleteProduct, edithandle }) {
                     d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"
                   />
                 </svg>
-              </div>
-            </Link>
+              </Link>
+            </div>
           </div>
         </td>
       </tr>
@@ -338,16 +295,14 @@ function ProductDetails({ product, deleteProduct, edithandle }) {
       </h1>
       <div className="flex justify-end">
         <button
-          onClick={add}
+          onClick={() => navigate("/addproduct")}
           type="button"
           className="focus:outline-none text-white bg-black shadow-[inset_0_0_10px_rgba(0,0,0,0.6)] border hover:bg-pink-700 outline-0 font-medium rounded-lg text-sm px-5 py-2.5 mb-2"
         >
           Add Product
         </button>
-   
-      
         <button
-          onClick={update}
+          onClick={() => navigate("/lookupdate")}
           type="button"
           className="focus:outline-none text-white bg-black shadow-[inset_0_0_10px_rgba(0,0,0,0.6)] border hover:bg-pink-700 outline-0 font-medium rounded-lg text-sm px-5 py-2.5 mb-2"
         >
@@ -396,6 +351,25 @@ function ProductDetails({ product, deleteProduct, edithandle }) {
           </thead>
           <tbody>{renderRows()}</tbody>
         </table>
+      </div>
+      <div className="flex justify-between mt-4">
+        <button
+          onClick={prevPage}
+          disabled={pageIndex === 0}
+          className="px-4 py-2 bg-gray-200 text-gray-600 rounded-md disabled:opacity-50"
+        >
+          Previous
+        </button>
+        <span className="text-gray-600">
+          Page {pageIndex + 1} of {totalPages}
+        </span>
+        <button
+          onClick={nextPage}
+          disabled={pageIndex === totalPages - 1 || totalPages === 0}
+          className="px-4 py-2 bg-gray-200 text-gray-600 rounded-md disabled:opacity-50"
+        >
+          Next
+        </button>
       </div>
     </div>
   );
