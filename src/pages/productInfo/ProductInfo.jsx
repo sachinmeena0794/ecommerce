@@ -65,7 +65,7 @@ function ProductInfo() {
     alt="ecommerce"
     className="w-full h-full object-cover object-center rounded-lg shadow-xl transition transform hover:scale-105 duration-300"
     src={product.imageUrl}
-    style={{ maxHeight: "100%", objectFit: "cover" }}
+    style={{ maxHeight: "300px", objectFit: "cover" }}
   />
 </div>
 
