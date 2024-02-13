@@ -6,46 +6,52 @@ import { MdOutlineProductionQuantityLimits } from "react-icons/md";
 import { FaUser, FaCartPlus } from "react-icons/fa";
 import { AiFillShopping, AiFillPlusCircle, AiFillDelete } from "react-icons/ai";
 import { Link, useNavigate } from "react-router-dom";
+import Table from "../../../components/table/table";
 
 function OrderDetails({ order }) {
-  const [sortBy, setSortBy] = useState("paymentId");
+  const [sortBy, setSortBy] = useState('paymentId');
   const [sortDesc, setSortDesc] = useState(false);
   const [pageIndex, setPageIndex] = useState(0);
   const pageSize = 5; // Number of items per page
 
-  // Sorting function
-  const sortData = (data) => {
-    return data.sort((a, b) => {
-      if (a[sortBy] < b[sortBy]) return sortDesc ? 1 : -1;
-      if (a[sortBy] > b[sortBy]) return sortDesc ? -1 : 1;
-      return 0;
-    });
-  };
-
-  // Paginate data
-  const paginateData = (data) => {
-    const startIndex = pageIndex * pageSize;
-    return data.slice(startIndex, startIndex + pageSize);
-  };
-
-  // Render table rows
-  const renderRows = () => {
-    const sortedData = sortData(order);
-    const paginatedData = paginateData(sortedData);
-
-    return paginatedData.map((orderData, index) => (
-      <tr key={index} className="bg-gray-50 border-b dark:border-gray-700">
-        <td className="px-6 py-4 text-black">{orderData?.paymentId}</td>
-        <td className="px-6 py-4 text-black">₹{orderData?.grandTotal}</td>
-        <td className="px-6 py-4 text-black">{orderData?.addressInfo?.name}</td>
-        <td className="px-6 py-4 text-black">{orderData?.addressInfo?.address}</td>
-        <td className="px-6 py-4 text-black">{orderData?.addressInfo?.pincode}</td>
-        <td className="px-6 py-4 text-black">{orderData?.addressInfo?.phoneNumber}</td>
-        <td className="px-6 py-4 text-black">{orderData?.email}</td>
-        <td className="px-6 py-4 text-black">{orderData?.date}</td>
-     </tr>
-    ));
-  };
+  // Define columns for the table
+  const columns = React.useMemo(
+    () => [
+      {
+        Header: 'Payment Id',
+        accessor: 'paymentId',
+      },
+      {
+        Header: 'Total',
+        accessor: 'grandTotal',
+      },
+      {
+        Header: 'Name',
+        accessor: 'addressInfo.name',
+      },
+      {
+        Header: 'Address',
+        accessor: 'addressInfo.address',
+      },
+      {
+        Header: 'Pincode',
+        accessor: 'addressInfo.pincode',
+      },
+      {
+        Header: 'Phone Number',
+        accessor: 'addressInfo.phoneNumber',
+      },
+      {
+        Header: 'Email',
+        accessor: 'email',
+      },
+      {
+        Header: 'Date',
+        accessor: 'date',
+      },
+    ],
+    []
+  );
 
   // Handle sorting
   const handleSort = (sortByField) => {
@@ -61,43 +67,16 @@ function OrderDetails({ order }) {
     <div className="px-4 md:px-0 mb-16">
       <h1 className="text-center mb-5 text-3xl font-semibold underline">Order Details</h1>
       <div className="relative overflow-x-auto">
-        <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-          <thead className="text-xs border border-gray-600 text-black uppercase bg-gray-200 shadow-[inset_0_0_8px_rgba(0,0,0,0.6)]">
-            <tr>
-              <th className="px-6 py-3 cursor-pointer" onClick={() => handleSort("paymentId")}>
-                Payment Id {sortBy === "paymentId" && <span>{sortDesc ? "▼" : "▲"}</span>}
-              </th>
-              <th className="px-6 py-3" onClick={() => handleSort("grandTotal")}>
-                Total {sortBy === "grandTotal" && <span>{sortDesc ? "▼" : "▲"}</span>}
-              </th>
-              <th className="px-6 py-3" onClick={() => handleSort("addressInfo.name")}>
-                Name {sortBy === "addressInfo.name" && <span>{sortDesc ? "▼" : "▲"}</span>}
-              </th>
-              <th className="px-6 py-3" onClick={() => handleSort("addressInfo.address")}>
-                Address {sortBy === "addressInfo.address" && <span>{sortDesc ? "▼" : "▲"}</span>}
-              </th>
-              <th className="px-6 py-3" onClick={() => handleSort("addressInfo.pincode")}>
-                Pincode {sortBy === "addressInfo.pincode" && <span>{sortDesc ? "▼" : "▲"}</span>}
-              </th>
-              <th className="px-6 py-3" onClick={() => handleSort("addressInfo.phoneNumber")}>
-                Phone Number {sortBy === "addressInfo.phoneNumber" && <span>{sortDesc ? "▼" : "▲"}</span>}
-              </th>
-              <th className="px-6 py-3" onClick={() => handleSort("email")}>
-                Email {sortBy === "email" && <span>{sortDesc ? "▼" : "▲"}</span>}
-              </th>
-              <th className="px-6 py-3" onClick={() => handleSort("date")}>
-                Date {sortBy === "date" && <span>{sortDesc ? "▼" : "▲"}</span>}
-              </th>
-            </tr>
-          </thead>
-          <tbody>{renderRows()}</tbody>
-        </table>
-      </div>
-      {/* Pagination controls */}
-      <div className="flex justify-between mt-4">
-        <button onClick={() => setPageIndex(prev => prev - 1)} disabled={pageIndex === 0} className="px-4 py-2 bg-gray-200 text-gray-600 rounded-md disabled:opacity-50">Previous</button>
-        <span className="text-gray-600">Page {pageIndex + 1}</span>
-        <button onClick={() => setPageIndex(prev => prev + 1)} disabled={(pageIndex + 1) * pageSize >= order.length} className="px-4 py-2 bg-gray-200 text-gray-600 rounded-md disabled:opacity-50">Next</button>
+        <Table
+          columns={columns}
+          data={order}
+          sortBy={sortBy}
+          sortDesc={sortDesc}
+          onSort={handleSort}
+          pageIndex={pageIndex}
+          pageSize={pageSize}
+          onPageChange={setPageIndex}
+        />
       </div>
     </div>
   );
@@ -106,39 +85,29 @@ function OrderDetails({ order }) {
 
 
 function UserDetails({ user }) {
-  const [sortBy, setSortBy] = useState("name");
+  const [sortBy, setSortBy] = useState('name');
   const [sortDesc, setSortDesc] = useState(false);
   const [pageIndex, setPageIndex] = useState(0);
   const pageSize = 5; // Number of items per page
 
-  // Sorting function
-  const sortData = (data) => {
-    return data.sort((a, b) => {
-      if (a[sortBy] < b[sortBy]) return sortDesc ? 1 : -1;
-      if (a[sortBy] > b[sortBy]) return sortDesc ? -1 : 1;
-      return 0;
-    });
-  };
-
-  // Paginate data
-  const paginateData = (data) => {
-    const startIndex = pageIndex * pageSize;
-    return data.slice(startIndex, startIndex + pageSize);
-  };
-
-  // Render table rows
-  const renderRows = () => {
-    const sortedData = sortData(user);
-    const paginatedData = paginateData(sortedData);
-
-    return paginatedData.map((userData, index) => (
-      <tr key={index} className="bg-gray-50 border-b dark:border-gray-700">
-        <td className="px-6 py-4 text-black">{userData.name}</td>
-        <td className="px-6 py-4 text-black">{userData.email}</td>
-        <td className="px-6 py-4 text-black">{userData.uid}</td>
-      </tr>
-    ));
-  };
+  // Define columns for the table
+  const columns = React.useMemo(
+    () => [
+      {
+        Header: 'Name',
+        accessor: 'name',
+      },
+      {
+        Header: 'Email',
+        accessor: 'email',
+      },
+      {
+        Header: 'Uid',
+        accessor: 'uid',
+      },
+    ],
+    []
+  );
 
   // Handle sorting
   const handleSort = (sortByField) => {
@@ -154,28 +123,16 @@ function UserDetails({ user }) {
     <div className="px-4 md:px-0 mb-16">
       <h1 className="text-center mb-5 text-3xl font-semibold underline">User Details</h1>
       <div className="relative overflow-x-auto">
-        <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-          <thead className="text-xs border border-gray-600 text-black uppercase bg-gray-200 shadow-[inset_0_0_8px_rgba(0,0,0,0.6)]">
-            <tr>
-              <th className="px-6 py-3 cursor-pointer" onClick={() => handleSort("name")}>
-                Name {sortBy === "name" && <span>{sortDesc ? "▼" : "▲"}</span>}
-              </th>
-              <th className="px-6 py-3 cursor-pointer" onClick={() => handleSort("email")}>
-                Email {sortBy === "email" && <span>{sortDesc ? "▼" : "▲"}</span>}
-              </th>
-              <th className="px-6 py-3 cursor-pointer" onClick={() => handleSort("uid")}>
-                Uid {sortBy === "uid" && <span>{sortDesc ? "▼" : "▲"}</span>}
-              </th>
-            </tr>
-          </thead>
-          <tbody>{renderRows()}</tbody>
-        </table>
-      </div>
-      {/* Pagination controls */}
-      <div className="flex justify-between mt-4">
-        <button onClick={() => setPageIndex(prev => prev - 1)} disabled={pageIndex === 0} className="px-4 py-2 bg-gray-200 text-gray-600 rounded-md disabled:opacity-50">Previous</button>
-        <span className="text-gray-600">Page {pageIndex + 1}</span>
-        <button onClick={() => setPageIndex(prev => prev + 1)} disabled={(pageIndex + 1) * pageSize >= user.length} className="px-4 py-2 bg-gray-200 text-gray-600 rounded-md disabled:opacity-50">Next</button>
+        <Table
+          columns={columns}
+          data={user}
+          sortBy={sortBy}
+          sortDesc={sortDesc}
+          onSort={handleSort}
+          pageIndex={pageIndex}
+          pageSize={pageSize}
+          onPageChange={setPageIndex}
+        />
       </div>
     </div>
   );
