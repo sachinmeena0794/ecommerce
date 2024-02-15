@@ -27,8 +27,8 @@ function Table({ columns, data }) {
   );
 
   return (
-    <div>
-      <table {...getTableProps()} className="min-w-full divide-y divide-gray-200">
+    <div className="max-w-screen-lg mx-auto">
+      <table {...getTableProps()} className="w-full min-w-full divide-y divide-gray-200">
         <thead className="bg-gray-50">
           {headerGroups.map(headerGroup => (
             <tr {...headerGroup.getHeaderGroupProps()}>
@@ -48,7 +48,7 @@ function Table({ columns, data }) {
               <tr {...row.getRowProps()}>
                 {row.cells.map(cell => {
                   return (
-                    <td {...cell.getCellProps()} className="px-6 py-4 whitespace-nowrap">
+                    <td {...cell.getCellProps()} className="px-6 py-4 whitespace-wrap max-w-sm">
                       {cell.render('Cell')}
                     </td>
                   )
@@ -59,9 +59,8 @@ function Table({ columns, data }) {
         </tbody>
       </table>
       <div>
-        <button onClick={() => previousPage()} disabled={!canPreviousPage}  className="focus:outline-none text-white bg-black shadow-[inset_0_0_10px_rgba(0,0,0,0.6)] border hover:bg-pink-700 outline-0 font-medium rounded-lg text-sm px-5 py-2.5 mb-2"
-        >
-          Previous 
+        <button onClick={() => previousPage()} disabled={!canPreviousPage} className="focus:outline-none text-white bg-black shadow-[inset_0_0_10px_rgba(0,0,0,0.6)] border hover:bg-pink-700 outline-0 font-medium rounded-lg text-sm px-5 py-2.5 mb-2">
+          Previous
         </button>
         <span>
            Page{' '}
@@ -69,8 +68,7 @@ function Table({ columns, data }) {
             {pageIndex + 1} of {pageCount}
           </strong>{' '}
         </span>
-        <button onClick={() => nextPage()} disabled={!canNextPage}  className="focus:outline-none text-white bg-black shadow-[inset_0_0_10px_rgba(0,0,0,0.6)] border hover:bg-pink-700 outline-0 font-medium rounded-lg text-sm px-5 py-2.5 mb-2"
-        >
+        <button onClick={() => nextPage()} disabled={!canNextPage} className="focus:outline-none text-white bg-black shadow-[inset_0_0_10px_rgba(0,0,0,0.6)] border hover:bg-pink-700 outline-0 font-medium rounded-lg text-sm px-5 py-2.5 mb-2">
           Next
         </button>
       </div>

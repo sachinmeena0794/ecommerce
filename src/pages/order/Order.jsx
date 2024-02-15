@@ -26,10 +26,7 @@ function Order() {
         Header: 'Title',
         accessor: 'cartItems[0].title',
       },
-      {
-        Header: 'Description',
-        accessor: 'cartItems[0].description',
-      },
+   
       {
         Header: 'Total',
         accessor: 'grandTotal',
@@ -37,6 +34,10 @@ function Order() {
       {
         Header: 'Status',
         accessor: 'status',
+      },
+      {
+        Header: 'Description',
+        accessor: 'cartItems[0].description',
       },
     ],
     []
