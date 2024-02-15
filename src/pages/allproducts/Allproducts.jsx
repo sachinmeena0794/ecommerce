@@ -22,7 +22,7 @@ function Allproducts() {
   }
 
   useEffect(() => {
-      localStorage.setItem('cart', JSON.stringify(cartItems));
+       // localStorage.setItem('cart', JSON.stringify(cartItems));
   }, [cartItems])
   useEffect(() => {
     window.scrollTo(0, 0)

@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice,current } from "@reduxjs/toolkit";
 
 const initialState = JSON.parse(localStorage.getItem('cart')) ?? [];
 
@@ -20,11 +20,16 @@ const cartSlice = createSlice({
           },
           updateCartItemQuantity(state, action) {
             const { id, quantity } = action.payload;
-            const existingItem = state.items.find(item => item.id === id);
-            if (existingItem) {
-              existingItem.quantity = quantity;
-            }
+            return current(state).map(item => {
+              if (item._id === id) {
+                return { ...item, quantity: quantity };
+              } else {
+                return item;
+              }
+            });
           }
+          
+          
     }
 })
 

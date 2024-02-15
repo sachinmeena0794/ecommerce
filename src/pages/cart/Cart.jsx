@@ -34,12 +34,12 @@ function Cart() {
   }, [cartItems]);
 
   const incrementQuantity = (item) => {
-    dispatch(updateCartItemQuantity({ id: item.id, quantity: item.quantity + 1 }));
+    dispatch(updateCartItemQuantity({ id: item._id, quantity: item.quantity + 1 }));
   };
 
   const decrementQuantity = (item) => {
     if (item.quantity > 1) {
-      dispatch(updateCartItemQuantity({ id: item.id, quantity: item.quantity - 1 }));
+      dispatch(updateCartItemQuantity({ id: item._id, quantity: item.quantity - 1 }));
     }
   };
 
@@ -130,19 +130,10 @@ function Cart() {
     var pay = new window.Razorpay(options);
     pay.open();
   }
-
-  const mappedCartItems = {};
-
-cartItems.forEach(item => {
-  if (mappedCartItems[item._id]) {
-    // If item already exists, increment quantity
-    mappedCartItems[item._id].quantity++;
-  } else {
-    // If item doesn't exist, add it with quantity 1
-    mappedCartItems[item._id] = { ...item, quantity: 1 };
-  }
-});
-console.log(mappedCartItems)
+ 
+  
+  
+console.log(cartItems)
   return (
     <Layout>
       <div className="h-screen bg-gray-100 pt-5 mb-[60%]">
@@ -151,7 +142,7 @@ console.log(mappedCartItems)
         ) : (
           <div className="mx-auto max-w-5xl justify-center px-6 md:flex md:space-x-6 xl:px-0">
             <div className="rounded-lg md:w-2/3">
-            {Object.values(mappedCartItems).map((item, index) => {
+            {cartItems.map((item, index) => {
   const { id, title, price, description, imageUrl, quantity } = item;
   return (
     <div key={id} className="justify-between mb-6 rounded-lg border drop-shadow-xl bg-white p-6 sm:flex sm:justify-start">

@@ -32,7 +32,7 @@ function Login() {
                 progress: undefined,
                 theme: "colored",
             });
-            localStorage.setItem('user', JSON.stringify(result));
+            // localStorage.setItem('user', JSON.stringify(result));
             console.log(JSON.stringify(result));
             navigate('/');
         } catch (error) {
