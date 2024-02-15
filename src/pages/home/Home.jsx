@@ -14,9 +14,6 @@ function Home() {
   return (
     <Layout>
     <HeroSection />
-    <a href="7400329511381@paytm">
-      <button>Pay me</button>
-    </a>
     <div className='flex flex-col'> 
       <ProductCard products={latestProducts} showDetails={false} />
       
