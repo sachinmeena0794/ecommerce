@@ -69,12 +69,14 @@ function Navbar() {
             <div className="mr-4 flex items-center">
               {/* Cart */}
               {user && (
-                <Link to={"/cart"} className="group -m-2 flex items-center p-2">
-                  <FiShoppingCart className="w-6 h-6 mr-2" />
-                  <span className="text-sm font-medium text-gray-700 group">
-                    {cartItems.length}
-                  </span>
-                </Link>
+       <Link to={"/cart"} className="group -m-2 flex items-center p-2">
+       <FiShoppingCart className="w-6 h-6 mr-2" />
+       <span className="text-sm font-medium text-gray-700 group">
+         {cartItems.reduce((totalQuantity, item) => totalQuantity + item.quantity, 0)}
+       </span>
+     </Link>
+     
+        
               )}
             </div>
           </div>
