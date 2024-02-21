@@ -56,7 +56,6 @@ function myState(props) {
             getProductData();
             setLoading(false)
         } catch (error) {
-            console.log(error);
             setLoading(false)
         }
         // setProducts("")
@@ -135,7 +134,6 @@ const updateLook = async (updatedLookData) => {
 
 
     const getProductData = async () => {
-
         setLoading(true)
         getLookData()
         try {
@@ -150,6 +148,7 @@ const updateLook = async (updatedLookData) => {
                     productArray.push({ ...doc.data(), id: doc.id });
                 });
                 setProduct(productArray);
+                console.log(productArray)
                 setLoading(false)
             });
 
@@ -217,7 +216,6 @@ const updateLook = async (updatedLookData) => {
                 setLoading(false)
             });
             setOrder(ordersArray);
-            console.log(ordersArray)
             setLoading(false);
         } catch (error) {
             console.log(error)
@@ -237,7 +235,6 @@ const updateLook = async (updatedLookData) => {
                 setLoading(false)
             });
             setUser(usersArray);
-            console.log(usersArray)
             setLoading(false);
         } catch (error) {
             console.log(error)
