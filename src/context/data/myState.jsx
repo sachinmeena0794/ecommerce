@@ -5,18 +5,7 @@ import { toast } from 'react-toastify';
 import { fireDB } from '../../fireabase/FirebaseConfig';
 
 function myState(props) {
-    const [mode, setMode] = useState('light');
 
-    const toggleMode = () => {
-        if (mode === 'light') {
-            setMode('dark');
-            document.body.style.backgroundColor = "rgb(17, 24, 39)"
-        }
-        else {
-            setMode('light');
-            document.body.style.backgroundColor = "white"
-        }
-    }
 
     const [loading, setLoading] = useState(false);
     const [products, setProducts] = useState(
@@ -65,6 +54,7 @@ function myState(props) {
 
     const [product, setProduct] = useState([]);
     const [look, setLook] = useState([]);
+    const [reviews, setReviews]=useState([])
     const getLookData= async() =>{
         try {
             const q = query(
@@ -92,6 +82,26 @@ function myState(props) {
 // Inside myState component
 
 // Inside myState component
+const getReviewsData = () => {
+    const q = query(collection(fireDB, 'productReviews'));
+
+    // Set up the listener for real-time updates
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+        let reviewsArray = [];
+        querySnapshot.forEach((doc) => {
+            reviewsArray.push({ ...doc.data(), id: doc.id });
+        });
+        setReviews(reviewsArray);
+        console.log(reviewsArray);
+    }, (error) => {
+        console.error('Error fetching reviews:', error);
+        setLoading(false);
+    });
+
+    // Return the cleanup function to unsubscribe from the listener
+    return unsubscribe;
+};
+
 
 const updateLook = async (updatedLookData) => {
     setLoading(true);
@@ -136,6 +146,7 @@ const updateLook = async (updatedLookData) => {
     const getProductData = async () => {
         setLoading(true)
         getLookData()
+        getReviewsData()
         try {
             const q = query(
                 collection(fireDB, 'products'),
@@ -245,6 +256,7 @@ const updateLook = async (updatedLookData) => {
     useEffect(() => {
         getOrderData();
         getUserData();
+        getReviewsData();
     }, []);
 
     const [searchkey, setSearchkey] = useState('')
@@ -253,9 +265,9 @@ const updateLook = async (updatedLookData) => {
 
     return (
         <MyContext.Provider value={{
-            mode, toggleMode, loading, setLoading,
+             loading, setLoading,
             products, setProducts, addProduct, product,look,updateLook,
-            edithandle, updateProduct, deleteProduct, order,
+            edithandle, updateProduct, deleteProduct, order,reviews,
             user, searchkey, setSearchkey,filterType,setFilterType,
             filterPrice,setFilterPrice
         }}>

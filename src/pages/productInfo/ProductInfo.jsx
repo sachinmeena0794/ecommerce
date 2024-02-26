@@ -8,6 +8,7 @@ import { toast } from "react-toastify";
 import { addToCart } from "../../redux/cartSlice";
 import { fireDB } from "../../fireabase/FirebaseConfig";
 import Loader from "../../components/loader/Loader"; // Import the loader component
+import ProductReview from "../../components/review/ProductReview";
 
 function ProductInfo() {
   const context = useContext(myContext);
@@ -45,6 +46,7 @@ function ProductInfo() {
 
   const handleAddToCart = () => {
     dispatch(addToCart(product));
+    
   };
 
   useEffect(() => {
@@ -54,22 +56,20 @@ function ProductInfo() {
   return (
     <Layout>
       <section className="text-gray-600 body-font overflow-hidden">
-        <div className="container px-5 py-16 mx-auto">
+        <div className="container px-5 py-8 mx-auto">
           {loading ? (
             <Loader /> // Display the loader while loading
           ) : (
             product && (
               <div className="lg:w-4/5 mx-auto flex flex-wrap items-center">
-               <div className="lg:w-1/2 w-full relative cursor-pointer" onClick={() => setShowModal(true)} style={{ maxHeight: "400px" }}>
-  <img
-    alt="ecommerce"
-    className="w-full h-full object-cover object-center rounded-lg shadow-xl transition transform hover:scale-105 duration-300"
-    src={product.imageUrl}
-    style={{ maxHeight: "300px", objectFit: "contain" }}
-  />
-</div>
-
-
+                <div className="lg:w-1/2 w-full relative cursor-pointer" onClick={() => setShowModal(true)} style={{ maxHeight: "400px" }}>
+                  <img
+                    alt="ecommerce"
+                    className="w-full h-full object-cover object-center rounded-lg shadow-xl transition transform hover:scale-105 duration-300"
+                    src={product.imageUrl}
+                    style={{ maxHeight: "300px", objectFit: "contain" }}
+                  />
+                </div>
                 <div className="lg:w-1/2 w-full lg:pl-10 lg:py-6 mt-6 lg:mt-0">
                   <h2 className="text-sm title-font text-gray-500 tracking-widest mb-2">
                     BRAND NAME
@@ -78,30 +78,27 @@ function ProductInfo() {
                     {product.title}
                   </h1>
                   <div className="flex items-center">
-                  
                     <span className="title-font font-medium text-2xl text-gray-900 mr-4 mx-4">
                       ₹{product.price}
                     </span>
                     <button
                       onClick={handleAddToCart}
-                      className="text-white bg-black border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded-full"
-                    >
+                      className="bg-black text-white py-2 px-4 rounded-lg mt-2 hover:bg-gray-600 focus:bg-gray-600 focus:ring focus:ring-black focus:ring-opacity-0 focus:outline-none transition-colors duration-200"
+                      >
                       Add To Cart
                     </button>
                   </div>
-                  
                   <p
                     className="leading-relaxed border-b-2 "
                     style={{
                       maxHeight: "200px",
                       overflow: "auto",
                       marginBottom: "4px",
-                      paddingBottom:"20px"
+                      paddingBottom: "20px"
                     }}
                   >
                     {product.description}
                   </p>
-                
                 </div>
               </div>
             )

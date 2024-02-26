@@ -136,11 +136,40 @@ function Cart() {
 console.log(cartItems)
   return (
     <Layout>
-      <div className="h-screen bg-gray-100 pt-5 mb-[60%]">
+      <div className="h-screen  pt-5 mb-[60%]">
         {cartItems.length === 0 ? (
           <div className="text-black text-center text-xl">Your cart is empty. Add items to proceed.</div>
         ) : (
           <div className="mx-auto max-w-5xl justify-center px-6 md:flex md:space-x-6 xl:px-0">
+         
+         <div className="mb-6 h-full rounded-lg border bg-white p-6 shadow-md md:mt-0 md:w-1/3">
+              <div className="mb-2 flex justify-between">
+                <p className="text-gray-700">Subtotal</p>
+                <p className="text-gray-700">₹{totalAmount}</p>
+              </div>
+              <div className="flex justify-between">
+                <p className="text-gray-700">Shipping</p>
+                <p className="text-gray-700">₹{shipping}</p>
+              </div>
+              <hr className="my-4" />
+              <div className="flex justify-between mb-3">
+                <p className="text-lg font-bold">Total</p>
+                <div>
+                  <p className="mb-1 text-lg font-bold">₹{grandTotal}</p>
+                </div>
+              </div>
+              <Modal
+                name={name}
+                address={address}
+                pincode={pincode}
+                phoneNumber={phoneNumber}
+                setName={setName}
+                setAddress={setAddress}
+                setPincode={setPincode}
+                setPhoneNumber={setPhoneNumber}
+                buyNow={buyNow}
+              />
+            </div>
             <div className="rounded-lg md:w-2/3">
             {cartItems.map((item, index) => {
   const { id, title, price, description, imageUrl, quantity } = item;
@@ -170,34 +199,7 @@ console.log(cartItems)
 
             </div>
 
-            <div className="mt-6 h-full rounded-lg border bg-white p-6 shadow-md md:mt-0 md:w-1/3">
-              <div className="mb-2 flex justify-between">
-                <p className="text-gray-700">Subtotal</p>
-                <p className="text-gray-700">₹{totalAmount}</p>
-              </div>
-              <div className="flex justify-between">
-                <p className="text-gray-700">Shipping</p>
-                <p className="text-gray-700">₹{shipping}</p>
-              </div>
-              <hr className="my-4" />
-              <div className="flex justify-between mb-3">
-                <p className="text-lg font-bold">Total</p>
-                <div>
-                  <p className="mb-1 text-lg font-bold">₹{grandTotal}</p>
-                </div>
-              </div>
-              <Modal
-                name={name}
-                address={address}
-                pincode={pincode}
-                phoneNumber={phoneNumber}
-                setName={setName}
-                setAddress={setAddress}
-                setPincode={setPincode}
-                setPhoneNumber={setPhoneNumber}
-                buyNow={buyNow}
-              />
-            </div>
+          
           </div>
         )}
       </div>

@@ -14,6 +14,7 @@ function ProductCard({ products, showDetails }) { // Receive 'products' and 'sho
   const handleBuyNow = (product) => {
    
       dispatch(addToCart(product));
+      
      
   };
   useEffect(() => {
@@ -56,11 +57,15 @@ function ProductCard({ products, showDetails }) { // Receive 'products' and 'sho
                         <p className="text-lg font-semibold text-gray-700 py-4 px-4">₹{price}</p>
                         <button
   onClick={() => handleBuyNow(item)}
-  className="bg-black text-white py-2 px-4 rounded-lg mt-2"
+  className="bg-black text-white py-2 px-4 rounded-lg mt-2 hover:bg-gray-600 focus:bg-gray-600 focus:ring focus:ring-black focus:ring-opacity-0 focus:outline-none transition-colors duration-200"
   style={{ cursor: 'pointer' }}
 >
   Buy Now
 </button>
+
+
+
+
                       </div>
                       </div>
                       
