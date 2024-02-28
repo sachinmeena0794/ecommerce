@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom'; // Import useNavigate
 import myContext from '../../context/data/myContext';
 import { toast } from 'react-toastify';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword ,signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 import { auth, fireDB } from '../../fireabase/FirebaseConfig';
 import { Timestamp, addDoc, collection } from 'firebase/firestore';
 import Loader from '../../components/loader/Loader';
@@ -13,9 +13,8 @@ function Signup() {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [showPassword, setShowPassword] = useState(false); // State to toggle password visibility
-    const navigate = useNavigate(); // Initialize useNavigate
-
+    const [showPassword, setShowPassword] = useState(false);
+    const navigate = useNavigate();
     const context = useContext(myContext);
     const { loading, setLoading } = context;
 
@@ -37,18 +36,32 @@ function Signup() {
             }
             const userRef = collection(fireDB, "users")
             await addDoc(userRef, user);
-            toast.success("Signup Succesfully")
+            toast.success("Signup Successfully")
             setName("");
             setEmail("");
             setPassword("");
             setLoading(false)
-            navigate('/'); // Navigate to the home page on successful signup
-            
+            navigate('/');
         } catch (error) {
-            console.log(error)
-            setLoading(false)
+            console.error(error);
+            setLoading(false);
+            toast.error("Signup failed. Please try again later.");
         }
-    }
+    };
+
+    // Function to handle Google sign-in
+    const handleGoogleSignIn = async () => {
+        try {
+            const provider = new GoogleAuthProvider();
+            const result = await signInWithPopup(auth, provider);
+            // Handle successful sign-in with Google
+            console.log("Google sign-in successful:", result);
+            navigate('/');
+        } catch (error) {
+            console.error("Google sign-in failed:", error);
+            toast.error("Google sign-in failed. Please try again later.");
+        }
+    };
 
     return (
         <Layout>
@@ -107,6 +120,13 @@ function Signup() {
                         </button>
                     </div>
                     <div>
+                        <button
+                            onClick={handleGoogleSignIn}
+                            className='bg-red-600 w-full text-white font-bold px-2 py-2 rounded-lg'>
+                            Signup with Google
+                        </button>
+                    </div>
+                    <div>
                         <h2 className='text-white text-lg'>Already have an account? <Link className='text-black font-bold px-1' 
                             style={{ transition: 'transform 0.3s ease-in-out', display: 'inline-block' }}
                             onMouseEnter={(e) => { e.target.style.transform = 'scale(1.15)'; }}
@@ -117,5 +137,6 @@ function Signup() {
         </Layout>
     )
 }
+
 
 export default Signup;

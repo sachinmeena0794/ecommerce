@@ -24,6 +24,7 @@ const UpdateLook = lazy (()=>import('./pages/admin/page/updateLook'));
 const Allproducts = lazy (()=>import('./pages/allproducts/Allproducts'));
 const Loader = lazy (()=>import("./components/loader/Loader"))
 const Look = lazy (()=>import('./pages/shop/shop'));
+const About = lazy (()=>import ('./pages/about/About'))
 
 
 
@@ -37,6 +38,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/shop" element={<Allproducts/>} />
           <Route path="/look" element={<Look />} />
+          <Route path="/about" element={<About />} />
           <Route path="/order" element={
             <ProtectedRoute>
               <Order />

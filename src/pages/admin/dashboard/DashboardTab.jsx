@@ -258,13 +258,7 @@ function ProductDetails({ product, deleteProduct, edithandle }) {
         >
           Add Product
         </button>
-        <button
-          onClick={() => navigate("/lookupdate")}
-          type="button"
-          className="focus:outline-none text-white bg-black shadow-[inset_0_0_10px_rgba(0,0,0,0.6)] border hover:bg-pink-700 outline-0 font-medium rounded-lg text-sm px-5 py-2.5 mb-2"
-        >
-          Update Look
-        </button>
+       
       </div>
       <div className="relative overflow-x-auto">
         <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">

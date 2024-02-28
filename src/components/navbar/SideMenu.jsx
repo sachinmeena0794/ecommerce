@@ -31,6 +31,7 @@ function SideMenu({ onClose, user, logout }) {
               >
                 Looks
               </Link>
+              
               {user ? (
                 <Link
                   to={"/order"}
@@ -48,6 +49,7 @@ function SideMenu({ onClose, user, logout }) {
                   Signup
                 </Link>
               )}
+              
               {user?.user?.email === "skillsuup@gmail.com" && (
                 <Link
                   to={"/dashboard"}
@@ -57,6 +59,13 @@ function SideMenu({ onClose, user, logout }) {
                   Admin
                 </Link>
               )}
+                <Link
+                to={"/about"}
+                onClick={onClose}
+                className="block mb-8 text-gray-300 menu-item text-3xl transition-all duration-300 hover:text-white hover:text-4xl"
+              >
+                About
+              </Link>
               {user && (
                 <button
                   onClick={logout}
@@ -65,6 +74,7 @@ function SideMenu({ onClose, user, logout }) {
                   Logout
                 </button>
               )}
+              
             </div>
           </div>
         </div>
