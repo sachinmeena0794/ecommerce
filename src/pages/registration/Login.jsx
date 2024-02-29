@@ -55,6 +55,7 @@ function Login() {
                                 name='email'
                                 className='bg-gray-600 mb-6 px-4 py-3 w-full rounded-lg text-black placeholder-text-gray-200 outline-none'
                                 placeholder='Email'
+                                style={{ backgroundColor: '#e2e0dc' }}
                             />
                             <div className='flex justify-center mb-6'>
                                 <button
@@ -74,6 +75,7 @@ function Login() {
                                     name='email'
                                     className='bg-gray-600 mb-6 px-4 py-3 w-full rounded-lg text-black placeholder-text-gray-200 outline-none'
                                     placeholder='Email'
+                                    style={{ backgroundColor: '#e2e0dc' }}
                                 />
                             </div>
                             <div>
@@ -82,8 +84,14 @@ function Login() {
                                         type={showPassword ? "text" : "password"}
                                         value={password}
                                         onChange={(e) => setPassword(e.target.value)}
+                                        onKeyDown={(e) => {
+                                            if (e.key === "Enter") {
+                                                login();
+                                            }
+                                        }}
                                         className='bg-gray-600 mb-6 px-4 py-3 w-full rounded-lg text-black placeholder-text-gray-200 outline-none pr-10'
                                         placeholder='Password'
+                                        style={{ backgroundColor: '#e2e0dc' }}
                                     />
                                     <button
                                         type="button"

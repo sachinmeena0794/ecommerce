@@ -122,8 +122,8 @@ function Signup() {
                     <div>
                         <button
                             onClick={handleGoogleSignIn}
-                            className='bg-red-600 w-full text-white font-bold px-2 py-2 rounded-lg'>
-                            Signup with Google
+                            className='bg-black w-full text-white font-bold px-2 py-2 rounded-lg'>
+                            Google Signup
                         </button>
                     </div>
                     <div>
