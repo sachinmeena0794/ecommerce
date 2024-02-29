@@ -29,7 +29,7 @@ function myState(props) {
     });
 
     const addProduct = async () => {
-        if (products.title == null || products.price == null || products.imageUrl == null || products.category == null || products.description == null) {
+        if (products._id == null || products.price == null || products.imageUrl == null || products.category == null || products.description == null) {
             return toast.error("all fields are required")
         }
 

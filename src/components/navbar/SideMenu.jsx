@@ -50,7 +50,7 @@ function SideMenu({ onClose, user, logout }) {
                 </Link>
               )}
               
-              {user?.user?.email === "skillsuup@gmail.com" && (
+              {user?.email === "skillsuup@gmail.com" && (
                 <Link
                   to={"/dashboard"}
                   onClick={onClose}

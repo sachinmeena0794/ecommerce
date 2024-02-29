@@ -5,7 +5,7 @@ import {
   Routes,
   Navigate,
 } from "react-router-dom";
-
+import { HashRouter } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -31,7 +31,8 @@ const About = lazy (()=>import ('./pages/about/About'))
 
 function App() {
   return (
-    <MyState>
+    <HashRouter>
+      <MyState>
       <Router>
       <Suspense fallback= {<Loader/>}>
       <Routes>
@@ -81,6 +82,8 @@ function App() {
      
       </Router>
     </MyState>
+    </HashRouter>
+    
 
   )
 }
@@ -103,7 +106,7 @@ export const ProtectedRoute = ({children}) => {
 const ProtectedRouteForAdmin = ({children})=> {
   const admin = JSON.parse(localStorage.getItem('user'))
   
-  if(admin.user.email === 'skillsuup@gmail.com'){
+  if(admin.email === 'skillsuup@gmail.com'){
     return children
   }
   else{

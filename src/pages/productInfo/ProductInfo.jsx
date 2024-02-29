@@ -75,7 +75,7 @@ function ProductInfo() {
                     BRAND NAME
                   </h2>
                   <h1 className="text-gray-900 text-3xl title-font font-medium mb-2">
-                    {product.title}
+                    {product._id}
                   </h1>
                   <div className="flex items-center">
                     <span className="title-font font-medium text-2xl text-gray-900 mr-4 mx-4">

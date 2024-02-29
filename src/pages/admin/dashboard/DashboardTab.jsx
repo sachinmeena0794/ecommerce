@@ -186,7 +186,7 @@ function ProductDetails({ product, deleteProduct, edithandle }) {
 
     return paginatedData.map((item, index) => (
       <tr key={index} className="bg-gray-50 border-b dark:border-gray-700">
-        <td className="px-6 py-4 text-black">{item.title}</td>
+        <td className="px-6 py-4 text-black">{item._id}</td>
         <td className="px-6 py-4 font-medium text-black whitespace-nowrap">
           <img className="w-16" src={item.imageUrl} alt="Product" />
         </td>

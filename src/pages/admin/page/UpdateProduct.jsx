@@ -20,18 +20,10 @@ function UpdateProduct() {
                             onChange={(e) => setProducts({ ...products, _id: e.target.value })}
                             name='title'
                             className=' bg-gray-600 mb-4 px-2 py-2 w-full lg:w-[20em] rounded-lg text-white placeholder:text-gray-200 outline-none'
-                            placeholder='Product ID'
-                        />
-                    </div>
-                    <div className="flex justify-center mb-4">
-                        <input type="text"
-                            value={products.title}
-                            onChange={(e) => setProducts({ ...products, title: e.target.value })}
-                            name='title'
-                            className=' bg-gray-600 mb-4 px-2 py-2 w-full lg:w-[20em] rounded-lg text-white placeholder:text-gray-200 outline-none'
                             placeholder='Product Title'
                         />
                     </div>
+                  
                     <div className="flex justify-center mb-4">
                         <input type="text"
                             value={products.price}
