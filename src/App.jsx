@@ -31,9 +31,9 @@ const About = lazy (()=>import ('./pages/about/About'))
 
 function App() {
   return (
-    <HashRouter>
+  
       <MyState>
-      <Router>
+        <HashRouter>
       <Suspense fallback= {<Loader/>}>
       <Routes>
           <Route path="/" element={<Home />} />
@@ -80,9 +80,9 @@ function App() {
       </Suspense>
         
      
-      </Router>
+      </HashRouter>
     </MyState>
-    </HashRouter>
+    
     
 
   )
