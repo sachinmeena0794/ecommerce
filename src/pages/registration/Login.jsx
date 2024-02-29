@@ -1,13 +1,12 @@
 import React, { useContext, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import myContext from '../../context/data/myContext';
-import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../../fireabase/FirebaseConfig';
 import { toast } from 'react-toastify';
 import Loader from '../../components/loader/Loader';
 import Layout from '../../components/layout/Layout';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
-import { sendPasswordResetEmail } from 'firebase/auth'; // Correct import statement
+import { sendPasswordResetEmail, signInWithEmailAndPassword ,getAuth } from 'firebase/auth'; // Correct import statement
 
 
 function Login() {
@@ -19,7 +18,8 @@ function Login() {
 
     const login = async () => {
         try {
-            await auth.signInWithEmailAndPassword(email, password);
+          const users=  await signInWithEmailAndPassword(auth,email, password);
+            localStorage.setItem('user', JSON.stringify(users.user));
             navigate('/');
         } catch (error) {
             console.error(error);
