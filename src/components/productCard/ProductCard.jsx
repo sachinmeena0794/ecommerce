@@ -30,7 +30,7 @@ function ProductCard({ products, showDetails }) { // Receive 'products' and 'sho
   return (
     <section className="text-gray-600 body-font">
       <div className="container px-5 py-8 md:py-16 mx-auto">
-       {  <h1 className={`text-lg md:text-3xl lg:text-3xl font-bold }`}>
+       {  <h1 className={`text-lg md:text-3xl lg:text-3xl font-bold uppercase`} style={{color:'#3C2A21'}}>
           Our Latest Collection
         </h1>}
         <hr className="border-t-3 border-gray-500  mb-8 w-80" /> {/* Horizontal rule with increased border color */}
@@ -41,12 +41,12 @@ function ProductCard({ products, showDetails }) { // Receive 'products' and 'sho
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4"> {/* Gap between columns */}
             {products.map((item, index) => {
-              const { imageUrl, _id, title, price } = item;
+              const { imageUrls, _id, title, price } = item;
               return (
                 <div key={index} className="p-4 drop-shadow-lg" style={{ marginBottom: '20px' }}> {/* Added marginBottom */}
                   <div className="flex flex-col h-full">
                     <div onClick={() => navigate(`/productinfo/${_id}`)} className="flex justify-center cursor-pointer h-96"> {/* Increased height for each product container */}
-                      <img className="object-cover w-full h-full hover:scale-110 transition-scale-180 duration-300 ease-in-out" src={imageUrl} alt="product" /> {/* Adjusted size of the image */}
+                      <img className="object-cover w-full h-full hover:scale-110 transition-scale-180 duration-300 ease-in-out" src={imageUrls[0]} alt="product" /> {/* Adjusted size of the image */}
                     </div>
                     {/* Conditionally render additional details based on the showDetails prop */}
                     {showDetails && (
@@ -79,8 +79,8 @@ function ProductCard({ products, showDetails }) { // Receive 'products' and 'sho
         {
           !showDetails &&
           <Link to={'/shop'}>
-        <button className='bg-gray-300 px-5 py-2 rounded-xl text-lg transition duration-300 ease-in-out hover:bg-gray-400 hover:text-white mt-4'
-        style={{position:'relative', bottom:'30px',left:'0'}}>
+        <button className='bg-gray-300 px-5 py-2 rounded-xl text-lg text-white mt-4'
+        style={{position:'relative', bottom:'30px',left:'0', backgroundColor:'#3C2A21'}}>
           See more
         </button>
       </Link>

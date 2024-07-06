@@ -71,7 +71,7 @@ function SideMenu({ onClose, user, logout }) {
                   onClick={logout}
                   className="block mb-8 text-gray-300 text-3xl transition-all duration-300 hover:text-white hover:text-4xl"
                 >
-                  Logout
+                  LOGOUT
                 </button>
               )}
               

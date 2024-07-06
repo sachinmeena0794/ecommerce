@@ -19,14 +19,16 @@ const Login = lazy (()=>import('./pages/registration/Login'));
 const Signup = lazy (()=>import('./pages/registration/Signup'));
 const ProductInfo = lazy (()=>import('./pages/productInfo/ProductInfo'));
 const AddProduct = lazy (()=>import('./pages/admin/page/AddProduct'));
+const AddLook = lazy (()=>import('./pages/admin/page/AddLook'))
 const UpdateProduct = lazy (()=>import('./pages/admin/page/UpdateProduct'));
 const UpdateLook = lazy (()=>import('./pages/admin/page/updateLook'));
 const Allproducts = lazy (()=>import('./pages/allproducts/Allproducts'));
 const Loader = lazy (()=>import("./components/loader/Loader"))
 const Look = lazy (()=>import('./pages/shop/shop'));
 const About = lazy (()=>import ('./pages/about/About'))
-
-
+const Policies = lazy(()=> import('./components/policy/policy'))
+const Terms = lazy(()=> import('./components/policy/Terms'))
+const Contact = lazy(()=> import('./components/policy/contact'))
 
 
 function App() {
@@ -64,6 +66,11 @@ function App() {
               <AddProduct/>
             </ProtectedRouteForAdmin>
           } />
+              <Route path='/addlook' element={
+            <ProtectedRouteForAdmin>
+              <AddLook/>
+            </ProtectedRouteForAdmin>
+          } />
            <Route path='/lookupdate' element={
             <ProtectedRouteForAdmin>
               <UpdateLook/>
@@ -74,6 +81,9 @@ function App() {
               <UpdateProduct/>
             </ProtectedRouteForAdmin>
           } />
+            <Route path="/policy" element={<Policies />} />
+            <Route path="/terms" element={<Terms />} />
+            <Route path="/contact-us" element={<Contact />} />
           <Route path="/*" element={<Home />} />
         </Routes>
         <ToastContainer/>

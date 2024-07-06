@@ -23,9 +23,7 @@ function HeroSection() {
         color: 'white', // Set text color
       }}
     >
-      <h1 style={{ fontSize: '3rem', fontWeight: "600", fontFamily: "Didot Bold", textAlign: "center" }}>
-        FOR YOU TO <br className="md:hidden" /> <span style={{ display: "inline-block", fontSize: "2rem", lineHeight: "1.2" }}>TOUCH & FEEL GOOD</span>
-      </h1>
+      
     </div>
   </div>
   

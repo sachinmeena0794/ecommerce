@@ -3,8 +3,11 @@ import MyContext from './myContext'
 import { Timestamp, addDoc, collection, deleteDoc, doc, getDocs,getDoc, onSnapshot, orderBy, query, setDoc } from 'firebase/firestore';
 import { toast } from 'react-toastify';
 import { fireDB } from '../../fireabase/FirebaseConfig';
+import { useNavigate } from 'react-router-dom';
+
 
 function myState(props) {
+
 
 
     const [loading, setLoading] = useState(false);
@@ -27,7 +30,33 @@ function myState(props) {
             }
         )
     });
+    const [looks, setLooks] = useState(
+        {
+        id_: null,
+        title: null,
+        quantity :1,
+        price: null,
+        imageUrl: null,
+        imageUrl2: null,
+        imageUrl3: null,
+        imageUrl4: null,
+        category: null,
+        description: null,
+        time: Timestamp.now(),
+        date: new Date().toLocaleString(
+            "en-US",
+            {
+                month: "short",
+                day: "2-digit",
+                year: "numeric",
+            }
+        )
+    });
+   
 
+    // bew
+
+  
     const addProduct = async () => {
         if (products._id == null || products.price == null || products.imageUrl == null || products.category == null || products.description == null) {
             return toast.error("all fields are required")
@@ -39,18 +68,18 @@ function myState(props) {
             const productRef = collection(fireDB, 'products');
             await addDoc(productRef, products)
             toast.success("Add product successfully");
-            setTimeout(() => {
-                window.location.href = '/dashboard'
-            }, 800);
             getProductData();
-            setLoading(false)
+            setLoading(false);
+         
         } catch (error) {
-            setLoading(false)
+            setLoading(false);
         }
+        
         // setProducts("")
 
 
     }
+  
 
     const [product, setProduct] = useState([]);
     const [look, setLook] = useState([]);
@@ -79,6 +108,7 @@ function myState(props) {
         }
         
     }
+
 // Inside myState component
 
 // Inside myState component
@@ -145,7 +175,7 @@ const updateLook = async (updatedLookData) => {
 
     const getProductData = async () => {
         setLoading(true)
-        getLookData()
+       
         getReviewsData()
         try {
             const q = query(
@@ -172,9 +202,7 @@ const updateLook = async (updatedLookData) => {
 
     }
 
-    useEffect(() => {
-        getProductData();
-    }, []);
+  
 
     // update product function
 
@@ -182,39 +210,57 @@ const updateLook = async (updatedLookData) => {
         setProducts(item)
     }
 
-    const updateProduct = async () => {
-        setLoading(true)
-        try {
-
-            await setDoc(doc(fireDB, 'products', products.id), products)
-            toast.success("Product Updated successfully")
-            setTimeout(() => {
-                window.location.href = '/dashboard'
-            }, 800);
-            getProductData();
-            setLoading(false)
-
-        } catch (error) {
-            console.log(error)
-            setLoading(false)
-        }
-    }
+  
 
     // delete product
 
     const deleteProduct = async (item) => {
+        setLoading(true);
+        try {
+            // Check if the collection has more than one document
+            const querySnapshot = await getDocs(collection(fireDB, 'products'));
+    
+            // If only one document exists, handle accordingly
+            if (querySnapshot.size === 1) {
+                console.log('This is the last document in the collection');
+                // Handle the scenario where this is the last document
+                // Optionally, you can add a placeholder document here if needed
+            }
+    
+            // Delete the document
+            await deleteDoc(doc(fireDB, 'products', item.id));
+            console.log(`Document with ID ${item.id} deleted`);
+    
+            // Refresh product data
+            await getProductData();
+    
+            // Check if the collection is empty after deletion
+            const updatedQuerySnapshot = await getDocs(collection(fireDB, 'products'));
+            if (updatedQuerySnapshot.empty) {
+                console.log('The collection is now empty');
+                // Update your UI or state to reflect the empty collection
+            }
+    
+            setLoading(false);
+        } catch (error) {
+            console.log(error);
+            toast.error('Error deleting product');
+            setLoading(false);
+        }
+    };
+    
+
+    const deleteLook = async (item) => {
         setLoading(true)
         try {
-            await deleteDoc(doc(fireDB, 'products', item.id))
-            getProductData();
+            await deleteDoc(doc(fireDB, 'looks', item.id))
+            getLookData();
             setLoading(false)
         } catch (error) {
             console.log(error)
             setLoading(false)
         }
     }
-
-
     const [order, setOrder] = useState([]);
 
     const getOrderData = async () => {
@@ -257,6 +303,8 @@ const updateLook = async (updatedLookData) => {
         getOrderData();
         getUserData();
         getReviewsData();
+        getLookData();
+        getProductData();
     }, []);
 
     const [searchkey, setSearchkey] = useState('')
@@ -267,9 +315,9 @@ const updateLook = async (updatedLookData) => {
         <MyContext.Provider value={{
              loading, setLoading,
             products, setProducts, addProduct, product,look,updateLook,
-            edithandle, updateProduct, deleteProduct, order,reviews,
+            edithandle, deleteProduct, order,reviews,
             user, searchkey, setSearchkey,filterType,setFilterType,
-            filterPrice,setFilterPrice
+            filterPrice,setFilterPrice,looks,setLooks,deleteLook
         }}>
             {props.children}
         </MyContext.Provider>

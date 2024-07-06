@@ -1,100 +1,208 @@
-import React, { useContext } from 'react'
-import myContext from '../../../context/data/myContext'
+import React, { useState } from 'react';
+import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { collection, addDoc } from "firebase/firestore";
+import { toast } from 'react-toastify';
+import { fireDB } from '../../../fireabase/FirebaseConfig'; 
 import Layout from '../../../components/layout/Layout';
 import { Link } from 'react-router-dom';
+import Loader from "../../../components/loader/Loader";
 
-function AddProduct() {
-    const context = useContext(myContext);
-    const { products, setProducts, addProduct } = context;
-    return (
-       <Layout>
-        <div className='flex justify-center items-center h-screen'>
+const AddProductComponent = () => {
+  const [products, setProducts] = useState({
+    _id: '',
+    price: '',
+    imageUrls: [],
+    category: '',
+    description: '',
+    sizes: [],
+    fabric: '',
+    washCareInstructions: ''
+  });
+  const [loading, setLoading] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const [imageFiles, setImageFiles] = useState([null, null, null, null]);
+  const storage = getStorage();
+
+  const handleImageChange = (index, file) => {
+    const newImageFiles = [...imageFiles];
+    newImageFiles[index] = file;
+    setImageFiles(newImageFiles);
+  };
+
+  const handleImageUpload = async () => {
+    setUploading(true);
+    const urls = [];
+    try {
+      for (const file of imageFiles) {
+        if (file) {
+          const storageRef = ref(storage, `images/${file.name}`);
+          await uploadBytes(storageRef, file);
+          const downloadURL = await getDownloadURL(storageRef);
+          urls.push(downloadURL);
+        }
+      }
+      return urls;
+    } catch (error) {
+      console.error('Error uploading image:', error);
+      return [];
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const handleSizeChange = (size) => {
+    const newSizes = [...products.sizes];
+    if (newSizes.includes(size)) {
+      newSizes.splice(newSizes.indexOf(size), 1);
+    } else {
+      newSizes.push(size);
+    }
+    setProducts({ ...products, sizes: newSizes });
+  };
+
+  const addProduct = async () => {
+    if (!products._id || !products.price || !products.category || !products.description || products.sizes.length === 0 || !products.fabric || !products.washCareInstructions) {
+      return toast.error("All fields are required, including at least one size, fabric, and wash care instructions");
+    }
+
+    setLoading(true);
+    const imageUrls = await handleImageUpload();
+
+    if (imageUrls.length === 0) {
+      setLoading(false);
+      return toast.error("Error uploading images. Please try again.");
+    }
+
+    try {
+      const productData = { ...products, imageUrls };
+      const productRef = collection(fireDB, 'products');
+      await addDoc(productRef, productData);
+      toast.success("Product added successfully");
+      setProducts({ _id: '', price: '', imageUrls: [], category: '', description: '', sizes: [], fabric: '', washCareInstructions: '' });
+      setImageFiles([null, null, null, null]);
+    } catch (error) {
+      console.error('Error adding product:', error);
+      toast.error('Error adding product');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <Layout>
+      <div className='flex justify-center items-center h-screen'>
         <div className='flex justify-center' style={{ width: '100%' }}>
-        <div className='bg-gray-800 px-10 py-10 rounded-xl' style={{ maxHeight: '500px', overflowY: 'auto', width:'40%',margin:"auto" }}>
-          
-          <div className="">
-              <h1 className='text-center text-white text-xl mb-4 font-bold'>Add Product</h1>
-          </div>
-          <div className="flex justify-center mb-4">
-              <input type="text"
-                  value={products._id}
-                  onChange={(e) => setProducts({ ...products, _id: e.target.value })
-                  
-                }
-                  
-                  name='ID'
-                  className=' bg-gray-600 mb-4 px-2 py-2 w-full lg:w-[20em] rounded-lg text-white placeholder:text-gray-200 outline-none'
-                  placeholder='Product Title'
-              />
-          </div>
-          
-          <div className="flex justify-center mb-4">
-              <input type="text"
-                  value={products.price}
-                  onChange={(e) => setProducts({ ...products, price: e.target.value })}
-                  name='price'
-                  className=' bg-gray-600 mb-4 px-2 py-2 w-full lg:w-[20em] rounded-lg text-white placeholder:text-gray-200 outline-none'
-                  placeholder='Product price'
-              />
-          </div>
-          <div className="flex justify-center mb-4">
-              <input type="text"
-                  value={products.imageUrl}
-                  onChange={(e) => setProducts({ ...products, imageUrl: e.target.value })}
-                  name='imageurl'
-                  className=' bg-gray-600 mb-4 px-2 py-2 w-full lg:w-[20em] rounded-lg text-white placeholder:text-gray-200 outline-none'
-                  placeholder='Product imageUrl'
-              />
-          </div>
-          <div className="flex justify-center mb-4">
-              <input type="text"
-                  value={products.category}
-                  onChange={(e) => setProducts({ ...products, category: e.target.value })}
-                  name='category'
-                  className=' bg-gray-600 mb-4 px-2 py-2 w-full lg:w-[20em] rounded-lg text-white placeholder:text-gray-200 outline-none'
-                  placeholder='Product category'
-              />
-          </div>
-          <div className="flex justify-center mb-4">
-              <textarea cols="30" rows="10" name='title'
-               value={products.description}
-               onChange={(e) => setProducts({ ...products, description: e.target.value })}
-                  className=' bg-gray-600 mb-4 px-2 py-2 w-full lg:w-[20em] rounded-lg text-white placeholder:text-gray-200 outline-none'
-                  placeholder='Product desc'>
-
-              </textarea>
-          </div>
-          <div className="flex justify-center mb-4">
-              <label className="text-white">
+          <div className='bg-gray-800 px-10 py-10 rounded-xl' style={{ maxHeight: '500px', overflowY: 'auto', width: '80%', margin: 'auto' }}>
+            {loading && <Loader />} {/* Show Loader component while loading */}
+            {!loading && (
+              <>
+                <div>
+                  <h1 className='text-center text-white text-xl mb-4 font-bold'>Add Product</h1>
+                </div>
+                <div className="flex justify-center mb-4">
                   <input
-                      type="checkbox"
-                      checked={products.looks}
-                      onChange={(e) => setProducts({ ...products, looks: e.target.checked })}
-                      className="mr-2"
+                    type="text"
+                    value={products._id}
+                    onChange={(e) => setProducts({ ...products, _id: e.target.value })}
+                    name='ID'
+                    className='bg-gray-600 mb-4 px-2 py-2 w-full lg:w-[20em] rounded-lg text-white placeholder:text-gray-200 outline-none'
+                    placeholder='Product ID'
                   />
-                  Set Looks
-              </label>
+                </div>
+                <div className="flex justify-center mb-4">
+                  <input
+                    type="text"
+                    value={products.price}
+                    onChange={(e) => setProducts({ ...products, price: e.target.value })}
+                    name='price'
+                    className='bg-gray-600 mb-4 px-2 py-2 w-full lg:w-[20em] rounded-lg text-white placeholder:text-gray-200 outline-none'
+                    placeholder='Product Price'
+                  />
+                </div>
+                <div className="mb-4">
+                  {Array.from({ length: 4 }).map((_, index) => (
+                    <div key={index} className="flex justify-center mb-4">
+                      <input
+                        type="file"
+                        onChange={(e) => handleImageChange(index, e.target.files[0])}
+                        className='bg-gray-600 px-2 py-2 w-full lg:w-[20em] rounded-lg text-white placeholder:text-gray-200 outline-none'
+                      />
+                    </div>
+                  ))}
+                </div>
+                <div className="flex justify-center mb-4">
+                  <input
+                    type="text"
+                    value={products.category}
+                    onChange={(e) => setProducts({ ...products, category: e.target.value })}
+                    name='category'
+                    className='bg-gray-600 mb-4 px-2 py-2 w-full lg:w-[20em] rounded-lg text-white placeholder:text-gray-200 outline-none'
+                    placeholder='Product Category'
+                  />
+                </div>
+                <div className="flex justify-center mb-4">
+                  <label className="text-white">Add Size</label>
+                  <div className="flex justify-center mb-4 px-4">
+                    {['s', 'm', 'l', 'xl'].map(size => (
+                      <label key={size} className="text-white mr-2">
+                        <input
+                          type="checkbox"
+                          checked={products.sizes.includes(size)}
+                          onChange={() => handleSizeChange(size)}
+                          className="mr-2"
+                        />
+                        {size.toUpperCase()}
+                      </label>
+                    ))}
+                  </div>
+                </div>
+                <div className="flex justify-center mb-4">
+                  <textarea
+                    cols="30"
+                    rows="10"
+                    name='description'
+                    value={products.description}
+                    onChange={(e) => setProducts({ ...products, description: e.target.value })}
+                    className='bg-gray-600 mb-4 px-2 py-2 w-full lg:w-[20em] rounded-lg text-white placeholder:text-gray-200 outline-none'
+                    placeholder='Product Description'>
+                  </textarea>
+                </div>
+                <div className="flex justify-center mb-4">
+                  <input
+                    type="text"
+                    value={products.fabric}
+                    onChange={(e) => setProducts({ ...products, fabric: e.target.value })}
+                    name='fabric'
+                    className='bg-gray-600 mb-4 px-2 py-2 w-full lg:w-[20em] rounded-lg text-white placeholder:text-gray-200 outline-none'
+                    placeholder='Fabric'
+                  />
+                </div>
+                <div className="flex justify-center mb-4">
+                  <textarea
+                    cols="30"
+                    rows="5"
+                    name='washCareInstructions'
+                    value={products.washCareInstructions}
+                    onChange={(e) => setProducts({ ...products, washCareInstructions: e.target.value })}
+                    className='bg-gray-600 mb-4 px-2 py-2 w-full lg:w-[20em] rounded-lg text-white placeholder:text-gray-200 outline-none'
+                    placeholder='Wash Care Instructions'>
+                  </textarea>
+                </div>
+                <div className='flex justify-center mb-3 mt-3'>
+                  <button
+                    onClick={addProduct}
+                    className='bg-yellow-500 w-50 text-black font-bold px-2 py-2 rounded-lg'>
+                    Add Product
+                  </button>
+                  <Link to="/dashboard" className='bg-yellow-500 text-black font-bold px-4 py-2 mx-2 rounded-lg'>Back</Link>
+                </div>
+              </>
+            )}
           </div>
-          <div className=' flex justify-center mb-3 mt-3'>
-              <button
-              onClick={addProduct}
-                  className=' bg-yellow-500 w-50 text-black font-bold  px-2 py-2 rounded-lg'>
-                  Add Product
-              </button>
-              <Link to="/dashboard" className='bg-yellow-500 text-black font-bold px-4 py-2 mx-2 rounded-lg'>Back</Link>
-       
-          </div>
-
-      </div>
-                
         </div>
-      
-            </div>
-            
-       </Layout>
-            
-       
-    )
-}
+      </div>
+    </Layout>
+  );
+};
 
-export default AddProduct
+export default AddProductComponent;

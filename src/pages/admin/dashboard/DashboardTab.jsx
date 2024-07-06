@@ -7,6 +7,10 @@ import { FaUser, FaCartPlus } from "react-icons/fa";
 import { AiFillShopping, AiFillPlusCircle, AiFillDelete } from "react-icons/ai";
 import { Link, useNavigate } from "react-router-dom";
 import Table from "../../../components/table/table";
+import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import Loader from "../../../components/loader/Loader";
+
+
 
 function OrderDetails({ order }) {
   const [sortBy, setSortBy] = useState('paymentId');
@@ -140,12 +144,17 @@ function UserDetails({ user }) {
 
 
 
+
 function ProductDetails({ product, deleteProduct, edithandle }) {
   const [sortBy, setSortBy] = useState("title");
   const [sortDesc, setSortDesc] = useState(false);
   const [pageIndex, setPageIndex] = useState(0);
   const pageSize = 5; // Number of items per page
   const navigate = useNavigate();
+  const [imageUrl, setImageUrl] = useState('');
+  const [uploading, setUploading] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const storage = getStorage();
 
   // Sorting function
   const sortData = (data) => {
@@ -188,7 +197,7 @@ function ProductDetails({ product, deleteProduct, edithandle }) {
       <tr key={index} className="bg-gray-50 border-b dark:border-gray-700">
         <td className="px-6 py-4 text-black">{item._id}</td>
         <td className="px-6 py-4 font-medium text-black whitespace-nowrap">
-          <img className="w-16" src={item.imageUrl} alt="Product" />
+          <img className="w-16" src={item.imageUrls[0]} alt="Product" />
         </td>
         <td className="px-6 py-4 text-black">₹{item.price}</td>
         <td className="px-6 py-4 text-black">{item.category}</td>
@@ -245,12 +254,43 @@ function ProductDetails({ product, deleteProduct, edithandle }) {
     }
   };
 
+  const handleImageUpload = async (event) => {
+    const file = event.target.files[0]; // Get the selected file
+    const storageRef = ref(storage);
+    const imagesRef = ref(storageRef, 'images'); // Reference to the "images" directory in Firebase Storage
+    const imageName = file.name; // Name of the image file
+
+    const imageRef = ref(imagesRef, imageName); // Reference to the image file in Firebase Storage
+
+    // Start uploading the file to Firebase Storage
+    setUploading(true);
+    try {
+      const snapshot = await uploadBytes(imageRef, file);
+      console.log('Image uploaded successfully!');
+
+      // Retrieve the download URL of the uploaded image
+      const downloadURL = await getDownloadURL(imageRef);
+      console.log('Download URL:', downloadURL);
+      setImageUrl(downloadURL);
+      setShowModal(true); // Show modal after upload completes
+    } catch (error) {
+      console.error('Error uploading image:', error);
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const closeModal = () => {
+    setShowModal(false);
+  };
+
   return (
     <div className="px-4 md:px-0 mb-16">
-      <h1 className="text-center mb-2 text-3xl font-semibold underline">
-        Product Details
-      </h1>
-      <div className="flex justify-end">
+      <h1 className="text-center mb-2 text-3xl font-semibold underline">Product Details</h1>
+{uploading && <Loader/>}
+      <div className="flex justify-center text-center ">
+      
+              <div className="flex justify-center">
         <button
           onClick={() => navigate("/addproduct")}
           type="button"
@@ -258,8 +298,18 @@ function ProductDetails({ product, deleteProduct, edithandle }) {
         >
           Add Product
         </button>
-       
+        <button
+          onClick={() => navigate("/addlook")}
+          type="button"
+          className="focus:outline-none text-white bg-black shadow-[inset_0_0_10px_rgba(0,0,0,0.6)] border hover:bg-pink-700 outline-0 font-medium rounded-lg text-sm px-5 py-2.5 mb-2"
+        >
+          Add Look
+        </button>
+        </div>
+
       </div>
+
+      <div className="relative overflow-x-auto">
       <div className="relative overflow-x-auto">
         <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
           <thead className="text-xs border border-gray-600 text-black uppercase bg-gray-200 shadow-[inset_0_0_8px_rgba(0,0,0,0.6)]">
@@ -303,21 +353,207 @@ function ProductDetails({ product, deleteProduct, edithandle }) {
           <tbody>{renderRows()}</tbody>
         </table>
       </div>
-      <div className="flex justify-between mt-4">
+      <div className="flex justify-center mt-4">
+  <button
+    onClick={prevPage}
+    disabled={pageIndex === 0}
+    className="bg-gray-200 text-gray-700 px-4 py-2 rounded-l-md mr-2"
+  >
+    Prev
+  </button>
+  <button
+    onClick={nextPage}
+    disabled={pageIndex === totalPages - 1}
+    className="bg-gray-200 text-gray-700 px-4 py-2 rounded-r-md"
+  >
+    Next
+  </button>
+</div>
+
+      </div>
+
+      {showModal && (
+        <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-gray-800 bg-opacity-75 z-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg">
+            <h2 className="text-xl font-semibold mb-4">Image Uploaded Successfully</h2>
+            <p>Download URL:</p>
+            <input
+              type="text"
+              value={imageUrl}
+              readOnly
+              className="w-full bg-gray-100 border border-gray-300 rounded px-3 py-2 mt-2 mb-4"
+            />
+            <button onClick={closeModal} className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">
+              Close
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+
+
+
+
+function LookDetails({ looks, deleteLook, editLook }) {
+  const [sortBy, setSortBy] = useState("title");
+  const [sortDesc, setSortDesc] = useState(false);
+  const [pageIndex, setPageIndex] = useState(0);
+  const pageSize = 5; // Number of items per page
+
+  // Sorting function
+  const sortData = (data) => {
+    return data.sort((a, b) => {
+      if (a[sortBy] < b[sortBy]) return sortDesc ? 1 : -1;
+      if (a[sortBy] > b[sortBy]) return sortDesc ? -1 : 1;
+      return 0;
+    });
+  };
+
+  // Paginate data
+  const paginateData = (data) => {
+    const startIndex = pageIndex * pageSize;
+    return data.slice(startIndex, startIndex + pageSize);
+  };
+
+  // Calculate total number of pages
+  const totalPages = Math.ceil(looks.length / pageSize);
+
+  // Handle navigation to previous page
+  const prevPage = () => {
+    if (pageIndex > 0) {
+      setPageIndex((prevIndex) => prevIndex - 1);
+    }
+  };
+
+  // Handle navigation to next page
+  const nextPage = () => {
+    if (pageIndex < totalPages - 1) {
+      setPageIndex((prevIndex) => prevIndex + 1);
+    }
+  };
+
+  // Render table rows
+  const renderRows = () => {
+    const sortedData = sortData(looks);
+    const paginatedData = paginateData(sortedData);
+
+    return paginatedData.map((item, index) => (
+      <tr key={index} className="bg-gray-50 border-b dark:border-gray-700">
+        <td className="px-6 py-4 text-black">{item._id}</td>
+        <td className="px-6 py-4 font-medium text-black whitespace-nowrap">
+          {/* Render your look image here */}
+          <img className="w-16" src={item.imageUrl} alt="Look" />
+        </td>
+        <td className="px-6 py-4 font-medium text-black whitespace-nowrap">
+          {/* Render your look image here */}
+          <img className="w-16" src={item.imageUrl2} alt="Look" />
+        </td>
+        <td className="px-6 py-4 font-medium text-black whitespace-nowrap">
+          {/* Render your look image here */}
+          <img className="w-16" src={item.imageUrl3} alt="Look" />
+        </td>
+        <td className="px-6 py-4 font-medium text-black whitespace-nowrap">
+          {/* Render your look image here */}
+          <img className="w-16" src={item.imageUrl4} alt="Look" />
+        </td>
+        <td className="px-6 py-4 text-black">{item.title}</td>
+        <td className="px-6 py-4 text-black">{item.description}</td>
+        <td className="px-6 py-4 text-black">{item.date}</td>
+        <td className="px-6 py-4">
+          <div className="flex gap-2 cursor-pointer text-black">
+            <div onClick={() => deleteLook(item)}>
+              {/* Add your delete icon SVG here */}
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                className="w-6 h-6"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </div>
+            <div onClick={() => editLook(item)}>
+              <Link to={`/editlook/${item._id}`}>
+                {/* Add your edit icon SVG here */}
+              </Link>
+            </div>
+          </div>
+        </td>
+      </tr>
+    ));
+  };
+
+  // Handle sorting
+  const handleSort = (sortByField) => {
+    if (sortByField === sortBy) {
+      setSortDesc(!sortDesc);
+    } else {
+      setSortBy(sortByField);
+      setSortDesc(false);
+    }
+  };
+
+  return (
+    <div className="px-4 md:px-0 mb-16">
+      <h1 className="text-center mb-2 text-3xl font-semibold underline">Look Details</h1>
+      {/* Add your upload look image input field here */}
+      <div className="relative overflow-x-auto">
+        <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+          <thead className="text-xs border border-gray-600 text-black uppercase bg-gray-200 shadow-[inset_0_0_8px_rgba(0,0,0,0.6)]">
+            <tr>
+              <th
+                scope="col"
+                className="px-6 py-3 text-left cursor-pointer"
+                onClick={() => handleSort("title")}
+              >
+                Title {sortBy === "title" && <span>{sortDesc ? "▼" : "▲"}</span>}
+              </th>
+              <th scope="col" className="px-6 py-3">
+                Image
+              </th>
+              <th
+                scope="col"
+                className="px-6 py-3 text-left cursor-pointer"
+                onClick={() => handleSort("description")}
+              >
+                Description {sortBy === "description" && <span>{sortDesc ? "▼" : "▲"}</span>}
+              </th>
+              <th
+                scope="col"
+                className="px-6 py-3 text-left cursor-pointer"
+                onClick={() => handleSort("date")}
+              >
+                Date {sortBy === "date" && <span>{sortDesc ? "▼" : "▲"}</span>}
+              </th>
+              <th scope="col" className="px-6 py-3">
+                Action
+              </th>
+            </tr>
+          </thead>
+          <tbody>{renderRows()}</tbody>
+        </table>
+      </div>
+      <div className="flex justify-center mt-4">
         <button
           onClick={prevPage}
           disabled={pageIndex === 0}
-          className="px-4 py-2 bg-gray-200 text-gray-600 rounded-md disabled:opacity-50"
+          className="bg-gray-200 text-gray-700 px-4 py-2 rounded-l-md mr-2"
         >
-          Previous
+          Prev
         </button>
-        <span className="text-gray-600">
-          Page {pageIndex + 1} of {totalPages}
-        </span>
         <button
           onClick={nextPage}
-          disabled={pageIndex === totalPages - 1 || totalPages === 0}
-          className="px-4 py-2 bg-gray-200 text-gray-600 rounded-md disabled:opacity-50"
+          disabled={pageIndex === totalPages - 1}
+          className="bg-gray-200 text-gray-700 px-4 py-2 rounded-r-md"
         >
           Next
         </button>
@@ -325,9 +561,12 @@ function ProductDetails({ product, deleteProduct, edithandle }) {
     </div>
   );
 }
+
+
+
 function DashboardTab() {
   const context = useContext(myContext);
-  const { mode, product, edithandle, deleteProduct, order, user } = context;
+  const { mode, product, edithandle, deleteProduct, order, user,look,deleteLook } = context;
 
   // console.log(product)
   let [isOpen, setIsOpen] = useState(false);
@@ -368,6 +607,17 @@ const navigate =useNavigate()
               <Tab>
                 <button
                   type="button"
+                  className="font-medium border-b-2 hover:shadow-purple-700 border-purple-500 text-purple-500 rounded-lg text-xl shadow-[inset_0_0_8px_rgba(0,0,0,0.6)]  px-5 py-1.5 text-center bg-[#605d5d12] "
+                >
+                  <div className="flex gap-2 items-center">
+                    <MdOutlineProductionQuantityLimits />
+                    Looks
+                  </div>{" "}
+                </button>
+              </Tab>
+              <Tab>
+                <button
+                  type="button"
                   className="font-medium border-b-2 border-pink-500 bg-[#605d5d12] text-pink-500  hover:shadow-pink-700  rounded-lg text-xl shadow-[inset_0_0_8px_rgba(0,0,0,0.6)]    px-5 py-1.5 text-center "
                 >
                   <div className="flex gap-2 items-center">
@@ -394,6 +644,12 @@ const navigate =useNavigate()
           edithandle={edithandle}
         />
             </TabPanel>
+            <TabPanel>
+  <LookDetails
+    looks={look}
+    deleteLook={deleteLook}
+  />
+</TabPanel>
 
             <TabPanel>
               <OrderDetails order={order} />
