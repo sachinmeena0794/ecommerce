@@ -6,18 +6,19 @@ import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { collection, addDoc } from "firebase/firestore";
 import { toast } from 'react-toastify';
 import { fireDB } from '../../../fireabase/FirebaseConfig';
+import { SketchPicker } from 'react-color';
 
 function AddLook() {
   const context = useContext(myContext);
   const { looks, setLooks } = context;
   const [loading, setLoading] = useState(false);
   const [uploading, setUploading] = useState(false);
-  const [images, setImages] = useState({ imageUrl: null, imageUrl2: null, imageUrl3: null, imageUrl4: null });
+  const [images, setImages] = useState([]);
+  const [currentColor, setCurrentColor] = useState('');
   const storage = getStorage();
 
   const handleImageChange = (e) => {
-    const { name, files } = e.target;
-    setImages({ ...images, [name]: files[0] });
+    setImages([...e.target.files]);
   };
 
   const uploadImage = async (file) => {
@@ -30,13 +31,10 @@ function AddLook() {
   const handleImageUpload = async () => {
     setUploading(true);
     try {
-      const imageUrls = await Promise.all(Object.values(images).map((file) => uploadImage(file)));
+      const imageUrls = await Promise.all(images.map((file) => uploadImage(file)));
       setLooks({
         ...looks,
-        imageUrl: imageUrls[0],
-        imageUrl2: imageUrls[1],
-        imageUrl3: imageUrls[2],
-        imageUrl4: imageUrls[3],
+        imageUrls
       });
 
     } catch (error) {
@@ -46,8 +44,15 @@ function AddLook() {
     }
   };
 
+  const addColor = () => {
+    if (currentColor && !looks.colors.includes(currentColor)) {
+      setLooks({ ...looks, colors: [...looks.colors, currentColor] });
+      setCurrentColor('');
+    }
+  };
+
   const addLook = async () => {
-    if (!looks._id || !looks.price || !looks.imageUrl || !looks.imageUrl2 || !looks.imageUrl3 || !looks.imageUrl4 || !looks.category || !looks.description || !looks.fabric || !looks.washCareInstructions) {
+    if (!looks._id || !looks.price || looks.imageUrls.length === 0 || !looks.category || !looks.description || !looks.fabric || !looks.washCareInstructions) {
       return toast.error('All fields are required');
     }
 
@@ -81,9 +86,9 @@ function AddLook() {
     <Layout>
       <div className='flex justify-center items-center h-screen'>
         <div className='flex justify-center' style={{ width: '100%' }}>
-          <div className='bg-gray-800 px-10 py-10 rounded-xl' style={{ maxHeight: '500px', overflowY: 'auto', width: '40%', margin: 'auto' }}>
+          <div className='px-10 py-10 rounded-xl' style={{ backgroundColor: '#f5f5dc', maxHeight: '90vh', overflowY: 'auto', width: '40%', margin: 'auto' }}>
             <div className="">
-              <h1 className='text-center text-white text-xl mb-4 font-bold'>Add Look</h1>
+              <h1 className='text-center text-black text-xl mb-4 font-bold'>Add Look</h1>
             </div>
 
             <form onSubmit={handleSubmit}>
@@ -93,7 +98,7 @@ function AddLook() {
                   name='_id'
                   value={looks._id}
                   onChange={handleInputChange}
-                  className='bg-gray-600 mb-4 px-2 py-2 w-full lg:w-[20em] rounded-lg text-white placeholder:text-gray-200 outline-none'
+                  className='bg-gray-300 mb-4 px-2 py-2 w-full lg:w-[20em] rounded-lg text-black placeholder:text-gray-700 outline-none'
                   placeholder='Product Title'
                 />
               </div>
@@ -104,44 +109,18 @@ function AddLook() {
                   name='price'
                   value={looks.price}
                   onChange={handleInputChange}
-                  className='bg-gray-600 mb-4 px-2 py-2 w-full lg:w-[20em] rounded-lg text-white placeholder:text-gray-200 outline-none'
+                  className='bg-gray-300 mb-4 px-2 py-2 w-full lg:w-[20em] rounded-lg text-black placeholder:text-gray-700 outline-none'
                   placeholder='Product Price'
                 />
               </div>
 
-              <div className="flex justify-center mb-4">
+              <div className="flex flex-col justify-center mb-4">
+                <label className="text-black mb-2">Choose multiple images</label>
                 <input
                   type="file"
-                  name='imageUrl'
+                  multiple
                   onChange={handleImageChange}
-                  className='bg-gray-600 mb-4 px-2 py-2 w-full lg:w-[20em] rounded-lg text-white placeholder:text-gray-200 outline-none'
-                />
-              </div>
-
-              <div className="flex justify-center mb-4">
-                <input
-                  type="file"
-                  name='imageUrl2'
-                  onChange={handleImageChange}
-                  className='bg-gray-600 mb-4 px-2 py-2 w-full lg:w-[20em] rounded-lg text-white placeholder:text-gray-200 outline-none'
-                />
-              </div>
-
-              <div className="flex justify-center mb-4">
-                <input
-                  type="file"
-                  name='imageUrl3'
-                  onChange={handleImageChange}
-                  className='bg-gray-600 mb-4 px-2 py-2 w-full lg:w-[20em] rounded-lg text-white placeholder:text-gray-200 outline-none'
-                />
-              </div>
-
-              <div className="flex justify-center mb-4">
-                <input
-                  type="file"
-                  name='imageUrl4'
-                  onChange={handleImageChange}
-                  className='bg-gray-600 mb-4 px-2 py-2 w-full lg:w-[20em] rounded-lg text-white placeholder:text-gray-200 outline-none'
+                  className='bg-gray-300 px-2 py-2 w-full lg:w-[20em] rounded-lg text-black placeholder:text-gray-700 outline-none'
                 />
               </div>
 
@@ -151,7 +130,7 @@ function AddLook() {
                   name='category'
                   value={looks.category}
                   onChange={handleInputChange}
-                  className='bg-gray-600 mb-4 px-2 py-2 w-full lg:w-[20em] rounded-lg text-white placeholder:text-gray-200 outline-none'
+                  className='bg-gray-300 mb-4 px-2 py-2 w-full lg:w-[20em] rounded-lg text-black placeholder:text-gray-700 outline-none'
                   placeholder='Product Category'
                 />
               </div>
@@ -163,7 +142,7 @@ function AddLook() {
                   name='description'
                   value={looks.description}
                   onChange={handleInputChange}
-                  className='bg-gray-600 mb-4 px-2 py-2 w-full lg:w-[20em] rounded-lg text-white placeholder:text-gray-200 outline-none'
+                  className='bg-gray-300 mb-4 px-2 py-2 w-full lg:w-[20em] rounded-lg text-black placeholder:text-gray-700 outline-none'
                   placeholder='Product Description'
                 />
               </div>
@@ -174,7 +153,7 @@ function AddLook() {
                   name='fabric'
                   value={looks.fabric}
                   onChange={handleInputChange}
-                  className='bg-gray-600 mb-4 px-2 py-2 w-full lg:w-[20em] rounded-lg text-white placeholder:text-gray-200 outline-none'
+                  className='bg-gray-300 mb-4 px-2 py-2 w-full lg:w-[20em] rounded-lg text-black placeholder:text-gray-700 outline-none'
                   placeholder='Fabric'
                 />
               </div>
@@ -186,9 +165,35 @@ function AddLook() {
                   name='washCareInstructions'
                   value={looks.washCareInstructions}
                   onChange={handleInputChange}
-                  className='bg-gray-600 mb-4 px-2 py-2 w-full lg:w-[20em] rounded-lg text-white placeholder:text-gray-200 outline-none'
+                  className='bg-gray-300 mb-4 px-2 py-2 w-full lg:w-[20em] rounded-lg text-black placeholder:text-gray-700 outline-none'
                   placeholder='Wash Care Instructions'
                 />
+              </div>
+
+              <div className="flex justify-center mb-4">
+                <div className="flex items-center mb-4">
+                  <SketchPicker
+                    color={currentColor}
+                    onChangeComplete={(color) => setCurrentColor(color.hex)}
+                  />
+                  <button
+                    type="button"
+                    onClick={addColor}
+                    className='bg-yellow-500 text-black font-bold px-2 py-1 rounded-lg ml-2'>
+                    Add Color
+                  </button>
+                </div>
+                <div className="flex flex-wrap justify-center mb-1">
+                  {looks.colors.map((color, index) => (
+                    <div key={index} className="flex items-center mr-4 mb-2">
+                      <div
+                        className='w-6 h-6 rounded-full'
+                        style={{ backgroundColor: color }}
+                      ></div>
+                      <span className="text-black ml-2">{color}</span>
+                    </div>
+                  ))}
+                </div>
               </div>
 
               <div className='flex justify-center mb-3 mt-3'>

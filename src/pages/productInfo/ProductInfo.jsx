@@ -18,6 +18,7 @@ function ProductInfo() {
   const [product, setProduct] = useState(null);
   const [mainImage, setMainImage] = useState(""); // State for main image URL
   const [selectedSize, setSelectedSize] = useState(""); // State for selected size
+  const [selectedColor, setSelectedColor] = useState({}); // State for selected color
   const [quantity, setQuantity] = useState(1); // State for quantity
   const [showModal, setShowModal] = useState(false); // State for size chart modal visibility
   const params = useParams();
@@ -26,16 +27,23 @@ function ProductInfo() {
     const getProductData = async () => {
       setLoading(true);
       try {
+        console.log("Querying for product with ID:", params.id);
+
         const productQuery = query(
           collection(fireDB, "products"),
           where("_id", "==", params.id)
         );
         const querySnapshot = await getDocs(productQuery);
 
-        querySnapshot.forEach((doc) => {
-          setProduct(doc.data());
-          setMainImage(doc.data().imageUrls[0]); // Set the main image to the first image
-        });
+        if (querySnapshot.empty) {
+          console.log("No matching documents.");
+        } else {
+          querySnapshot.forEach((doc) => {
+            console.log("Document data:", doc.data());
+            setProduct(doc.data());
+            setMainImage(doc.data().imageUrls[0]); // Set the main image to the first image
+          });
+        }
 
         setLoading(false);
       } catch (error) {
@@ -54,7 +62,11 @@ function ProductInfo() {
       toast.error("Please select a size.");
       return;
     }
-    dispatch(addToCart({ ...product, selectedSize, quantity }));
+    if (!selectedColor.hex) {
+      toast.error("Please select a color.");
+      return;
+    }
+    dispatch(addToCart({ ...product, selectedSize, selectedColor, quantity }));
   };
 
   const handleImageClick = (url) => {
@@ -134,10 +146,13 @@ function ProductInfo() {
                     <p className="text-sm font-semibold text-gray-700" style={{ minWidth: "150px" }}>
                       Available Sizes:
                     </p>
-                    <FiInfo 
-                      className="ml-2 text-gray-700 cursor-pointer"
-                      onClick={() => setShowModal(true)} // Show the size chart modal on click
-                    />
+                    <button
+                      onClick={() => setShowModal(true)}
+                      className="ml-2 text-gray-700 cursor-pointer text-sm border border-gray-400 px-2 py-1 rounded-md flex items-center"
+                    >
+                      <FiInfo className="mr-1" />
+                      Size Chart
+                    </button>
                     <div className="flex space-x-2 mt-2 px-2">
                       {product.sizes.map((size, idx) => (
                         <button
@@ -151,6 +166,25 @@ function ProductInfo() {
                         >
                           {size.toUpperCase()}
                         </button>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="mt-4 flex flex-col mb-4">
+                    <p className="text-sm font-semibold text-gray-700 mb-2">
+                      Available Colors:
+                    </p>
+                    <div className="flex flex-wrap space-x-2 px-2">
+                      {product.colors && product.colors.map((color, idx) => (
+                        <div key={idx} className="flex items-center space-x-2 mb-2">
+                          <button
+                            onClick={() => setSelectedColor(color)}
+                            className={`w-6 h-6 rounded-full ${
+                              selectedColor.hex === color.hex ? "ring-2 ring-black" : ""
+                            }`}
+                            style={{ backgroundColor: color.hex }}
+                          ></button>
+                          <span className="text-gray-800">{color.name}</span>
+                        </div>
                       ))}
                     </div>
                   </div>
@@ -203,8 +237,6 @@ function ProductInfo() {
       </section>
     </Layout>
   );
-  
-  
 }
 
 export default ProductInfo;
