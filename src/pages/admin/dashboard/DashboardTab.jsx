@@ -394,9 +394,6 @@ function ProductDetails({ product, deleteProduct, edithandle }) {
 }
 
 
-
-
-
 function LookDetails({ looks, deleteLook, editLook }) {
   const [sortBy, setSortBy] = useState("title");
   const [sortDesc, setSortDesc] = useState(false);
@@ -444,20 +441,7 @@ function LookDetails({ looks, deleteLook, editLook }) {
       <tr key={index} className="bg-gray-50 border-b dark:border-gray-700">
         <td className="px-6 py-4 text-black">{item._id}</td>
         <td className="px-6 py-4 font-medium text-black whitespace-nowrap">
-          {/* Render your look image here */}
-          <img className="w-16" src={item.imageUrl} alt="Look" />
-        </td>
-        <td className="px-6 py-4 font-medium text-black whitespace-nowrap">
-          {/* Render your look image here */}
-          <img className="w-16" src={item.imageUrl2} alt="Look" />
-        </td>
-        <td className="px-6 py-4 font-medium text-black whitespace-nowrap">
-          {/* Render your look image here */}
-          <img className="w-16" src={item.imageUrl3} alt="Look" />
-        </td>
-        <td className="px-6 py-4 font-medium text-black whitespace-nowrap">
-          {/* Render your look image here */}
-          <img className="w-16" src={item.imageUrl4} alt="Look" />
+          <img className="w-16" src={item.imageUrls?.[0]} alt="Look" />
         </td>
         <td className="px-6 py-4 text-black">{item.title}</td>
         <td className="px-6 py-4 text-black">{item.description}</td>
@@ -465,7 +449,6 @@ function LookDetails({ looks, deleteLook, editLook }) {
         <td className="px-6 py-4">
           <div className="flex gap-2 cursor-pointer text-black">
             <div onClick={() => deleteLook(item)}>
-              {/* Add your delete icon SVG here */}
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -481,9 +464,22 @@ function LookDetails({ looks, deleteLook, editLook }) {
                 />
               </svg>
             </div>
-            <div onClick={() => editLook(item)}>
+            <div>
               <Link to={`/editlook/${item._id}`}>
-                {/* Add your edit icon SVG here */}
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  className="w-6 h-6"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M15 12h6M3 6h18M3 6v12a2 2 0 002 2h14a2 2 0 002-2V6M9 12h6"
+                  />
+                </svg>
               </Link>
             </div>
           </div>
@@ -505,10 +501,9 @@ function LookDetails({ looks, deleteLook, editLook }) {
   return (
     <div className="px-4 md:px-0 mb-16">
       <h1 className="text-center mb-2 text-3xl font-semibold underline">Look Details</h1>
-      {/* Add your upload look image input field here */}
       <div className="relative overflow-x-auto">
         <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-          <thead className="text-xs border border-gray-600 text-black uppercase bg-gray-200 shadow-[inset_0_0_8px_rgba(0,0,0,0.6)]">
+          <thead className="w-full text-xs border border-gray-600 text-black uppercase bg-gray-200 shadow-[inset_0_0_8px_rgba(0,0,0,0.6)]">
             <tr>
               <th
                 scope="col"
@@ -561,7 +556,6 @@ function LookDetails({ looks, deleteLook, editLook }) {
     </div>
   );
 }
-
 
 
 function DashboardTab() {

@@ -1,7 +1,6 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import myContext from '../../context/data/myContext';
-import Carousel from 'react-bootstrap/Carousel';
 import Layout from '../../components/layout/Layout';
 import Loader from '../../components/loader/Loader';
 
@@ -18,45 +17,42 @@ const SHOP = () => {
 
   return (
     <Layout>
-      <div className="shop-container">
+      <div className="shop-container px-4 md:px-0">
         {filteredLooks.length === 0 ? (
           <h3 className="text-center mt-40">Nothing to display</h3>
         ) : (
           filteredLooks.map((product, productIndex) => (
-            <div key={product._id} className="product-container">
-              {/* Main image and Thumbnail container */}
-              <div className="image-container">
-                {/* Thumbnail images */}
-                <div className="thumbnail-carousel">
+            <div key={product._id} className="product-container mb-8 p-4 bg-white rounded-lg shadow-lg">
+              <div className="image-container flex flex-col items-center">
+                <div className="main-image-container mb-4">
                   <img
-                    src={product.imageUrl2}
-                    alt={`Thumbnail ${productIndex}-2`}
-                    className="thumbnail-image"
-                  />
-                  <img
-                    src={product.imageUrl3}
-                    alt={`Thumbnail ${productIndex}-3`}
-                    className="thumbnail-image"
-                  />
-                  <img
-                    src={product.imageUrl4}
-                    alt={`Thumbnail ${productIndex}-4`}
-                    className="thumbnail-image"
+                    className="main-image object-cover w-60 h-60 rounded-lg"
+                    src={product.imageUrls[0]}
+                    alt={`Product ${productIndex}-main`}
+                    onClick={() => navigate(`/productinfo/${product._id}`)}
                   />
                 </div>
-                {/* Main image carousel */}
-                <div className="main-carousel">
-                  <Carousel indicators={false} controls={false}>
-                    <Carousel.Item>
-                      <img
-                        className="d-block w-100 main-image"
-                        src={product.imageUrl}
-                        alt={`Product ${productIndex}-main`}
-                        onClick={() => navigate(`/productinfo/${product._id}`)}
-                      />
-                    </Carousel.Item>
-                  </Carousel>
+                <div className="thumbnail-carousel flex space-x-2">
+                  {product.imageUrls.slice(1).map((imageUrl, index) => (
+                    <img
+                      key={index}
+                      src={imageUrl}
+                      alt={`Thumbnail ${productIndex}-${index + 1}`}
+                      className="thumbnail-image cursor-pointer w-16 h-16 object-cover rounded-lg"
+                      onClick={() => setMainImage(imageUrl)}
+                    />
+                  ))}
                 </div>
+              </div>
+              <div className="text-center mt-4">
+                <h2 className="text-xl font-semibold text-gray-800">{product.title || "No Title"}</h2>
+                <p className="text-gray-600">{product.description || "No Description"}</p>
+                <button
+                  className="mt-4 bg-yellow-500 text-black font-bold px-6 py-2 rounded-lg"
+                  onClick={() => navigate(`/productinfo/${product._id}`)}
+                >
+                  View Details
+                </button>
               </div>
             </div>
           ))
@@ -64,6 +60,6 @@ const SHOP = () => {
       </div>
     </Layout>
   );
-}
+};
 
 export default SHOP;

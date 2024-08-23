@@ -18,7 +18,7 @@ function ProductInfo() {
   const [product, setProduct] = useState(null);
   const [mainImage, setMainImage] = useState(""); // State for main image URL
   const [selectedSize, setSelectedSize] = useState(""); // State for selected size
-  const [selectedColor, setSelectedColor] = useState({}); // State for selected color
+  const [selectedColor, setSelectedColor] = useState(""); // State for selected color
   const [quantity, setQuantity] = useState(1); // State for quantity
   const [showModal, setShowModal] = useState(false); // State for size chart modal visibility
   const params = useParams();
@@ -62,7 +62,7 @@ function ProductInfo() {
       toast.error("Please select a size.");
       return;
     }
-    if (!selectedColor.hex) {
+    if (!selectedColor) {
       toast.error("Please select a color.");
       return;
     }
@@ -103,7 +103,7 @@ function ProductInfo() {
                       />
                     </div>
                     <div className="flex mt-4 space-x-2">
-                      {product.imageUrls.map((url, idx) => (
+                      {product.imageUrls && product.imageUrls.map((url, idx) => (
                         <img
                           key={idx}
                           src={url}
@@ -154,7 +154,7 @@ function ProductInfo() {
                       Size Chart
                     </button>
                     <div className="flex space-x-2 mt-2 px-2">
-                      {product.sizes.map((size, idx) => (
+                      {product.sizes && product.sizes.map((size, idx) => (
                         <button
                           key={idx}
                           onClick={() => setSelectedSize(size)}
@@ -179,11 +179,10 @@ function ProductInfo() {
                           <button
                             onClick={() => setSelectedColor(color)}
                             className={`w-6 h-6 rounded-full ${
-                              selectedColor.hex === color.hex ? "ring-2 ring-black" : ""
+                              selectedColor === color ? "ring-2 ring-black" : ""
                             }`}
-                            style={{ backgroundColor: color.hex }}
+                            style={{ backgroundColor: color }}
                           ></button>
-                          <span className="text-gray-800">{color.name}</span>
                         </div>
                       ))}
                     </div>
